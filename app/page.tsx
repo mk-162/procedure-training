@@ -8,19 +8,17 @@ export default function HomePage() {
 
   return (
     <>
-      {/* GDS Start Page — The Hook */}
+      {/* Banner */}
       <div className="parliament-banner">
         <div className="container">
-          <span className="tag tag--green" style={{ marginBottom: "var(--space-4)", display: "inline-block" }}>
-            Beta
-          </span>
-          <h1>Erskine May Training</h1>
+          <h1>Procedural Training</h1>
           <p className="lead">
-            Learn parliamentary procedure through scenario-based training.
-            Synchronised with the live digital edition of Erskine May.
+            An authorised training resource for the practice and procedure of
+            the House of Commons, drawing on the 25th edition of Erskine May.
           </p>
           <p className="lead">
-            <strong>{TOTAL_CHAPTERS} chapters</strong> · <strong>{TOTAL_SECTIONS} sections</strong> · <strong>{availableCount} module{availableCount !== 1 ? "s" : ""} available</strong>
+            {TOTAL_CHAPTERS} chapters · {TOTAL_SECTIONS} sections ·
+            Synchronised with the live digital edition
           </p>
         </div>
       </div>
@@ -28,14 +26,17 @@ export default function HomePage() {
       <main className="page-content">
         <div className="container">
 
-          {/* "A Day in the Chamber" featured module */}
+          {/* Recommended programme */}
           <section className="featured-module">
-            <div className="featured-module__eyebrow">Start Here</div>
-            <h2 className="featured-module__title">A Day in the Chamber</h2>
+            <div className="featured-module__eyebrow">Recommended Programme</div>
+            <h2 className="featured-module__title">
+              Procedure in the House of Commons
+            </h2>
             <p className="featured-module__body">
-              It&apos;s your first week as a Parliamentary Assistant. PMQs has just
-              finished and the House is moving to an Opposition Day debate. Tempers
-              are high. Your Dispatch Box is full.
+              This programme covers the core procedural requirements for staff
+              supporting Members in the Chamber, from the ordering of business
+              through to the maintenance of order and the tabling of Questions.
+              Chapters 17–22 of Erskine May.
             </p>
             <div className="featured-module__chapters">
               {PARTS[2].chapters
@@ -46,13 +47,19 @@ export default function HomePage() {
                     href={`/chapter/${ch.number}`}
                     className={`featured-module__card ${ch.status === "coming-soon" ? "featured-module__card--locked" : ""}`}
                   >
-                    <span className="featured-module__card-number">Ch {ch.number}</span>
-                    <span className="featured-module__card-title">{ch.moduleTitle}</span>
-                    <span className="featured-module__card-desc">{ch.moduleDescription}</span>
+                    <span className="featured-module__card-number">
+                      Chapter {ch.number}
+                    </span>
+                    <span className="featured-module__card-title">
+                      {ch.moduleTitle}
+                    </span>
+                    <span className="featured-module__card-desc">
+                      {ch.moduleDescription}
+                    </span>
                     {ch.status === "available" ? (
                       <span className="tag tag--green">Available</span>
                     ) : (
-                      <span className="tag tag--grey">Coming soon</span>
+                      <span className="tag tag--grey">In preparation</span>
                     )}
                   </Link>
                 ))}
@@ -61,8 +68,12 @@ export default function HomePage() {
 
           {/* Full chapter index by Part */}
           <section className="chapter-index">
-            <h2>All Chapters</h2>
-            <p>Erskine May is organised into {PARTS.length} parts covering the full scope of parliamentary procedure.</p>
+            <h2>Complete Chapter Index</h2>
+            <p>
+              Erskine May is organised into {PARTS.length} parts. Select a
+              chapter to view its contents and, where available, to undertake
+              the associated training exercises.
+            </p>
 
             {PARTS.map((part) => (
               <div key={part.number} className="part-group">
@@ -77,15 +88,20 @@ export default function HomePage() {
                       href={`/chapter/${ch.number}`}
                       className={`chapter-list__item ${ch.status === "coming-soon" ? "chapter-list__item--locked" : ""}`}
                     >
-                      <div className="chapter-list__number">
-                        {ch.number}
-                      </div>
+                      <div className="chapter-list__number">{ch.number}</div>
                       <div className="chapter-list__body">
                         <div className="chapter-list__title">{ch.title}</div>
                         <div className="chapter-list__meta">
-                          {ch.sectionCount} sections · {ch.sprintCount} sprints · ~{ch.sprintCount * 3} min
+                          {ch.sectionCount} sections ·{" "}
+                          {ch.sprintCount} exercises ·{" "}
+                          approximately {ch.sprintCount * 3} minutes
                           {ch.status === "available" && (
-                            <span className="tag tag--green" style={{ marginLeft: "var(--space-2)" }}>Available</span>
+                            <span
+                              className="tag tag--green"
+                              style={{ marginLeft: "var(--space-2)" }}
+                            >
+                              Available
+                            </span>
                           )}
                         </div>
                       </div>
@@ -96,7 +112,6 @@ export default function HomePage() {
               </div>
             ))}
           </section>
-
         </div>
       </main>
     </>

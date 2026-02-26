@@ -16,7 +16,7 @@ export interface Scenario {
   context: string; // "The Move" — sets the scene
   question: string;
   choices: ScenarioChoice[];
-  difficulty: "foundation" | "intermediate" | "advanced";
+  difficulty: "introductory" | "applied" | "complex";
 }
 
 // Demo scenarios for Chapter 21: Maintenance of Order
@@ -60,7 +60,7 @@ export const DEMO_SCENARIOS: Scenario[] = [
           "The Speaker's authority to maintain order operates in real time during proceedings. There is no procedure for a post-debate written warning. The appropriate response to persistent defiance is to name the Member during the sitting.",
       },
     ],
-    difficulty: "intermediate",
+    difficulty: "applied",
   },
   {
     id: "maiden-speech",
@@ -100,7 +100,7 @@ export const DEMO_SCENARIOS: Scenario[] = [
           "Well spotted. The convention is precisely the opposite — it is customary for other Members NOT to intervene during a maiden speech, and for the new Member not to give way. This courtesy allows the new Member to speak without interruption.",
       },
     ],
-    difficulty: "foundation",
+    difficulty: "introductory",
   },
   {
     id: "unparliamentary-language",
@@ -141,7 +141,7 @@ export const DEMO_SCENARIOS: Scenario[] = [
           "The Committee of Privileges deals with matters of privilege, not routine breaches of order in debate. The Speaker's authority to maintain order in the Chamber is the appropriate mechanism here.",
       },
     ],
-    difficulty: "intermediate",
+    difficulty: "applied",
   },
 ];
 

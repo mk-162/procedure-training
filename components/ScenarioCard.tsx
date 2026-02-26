@@ -26,7 +26,7 @@ export function ScenarioCard({ scenario }: { scenario: Scenario }) {
 
   return (
     <div className="scenario-card">
-      <div className="scenario-card__eyebrow">The Move</div>
+      <div className="scenario-card__eyebrow">Procedural Exercise</div>
       <h2 className="scenario-card__title">{scenario.title}</h2>
       <p className="scenario-card__context">{scenario.context}</p>
       <p className="scenario-card__question">{scenario.question}</p>
@@ -77,8 +77,8 @@ export function ScenarioCard({ scenario }: { scenario: Scenario }) {
           >
             <div className="feedback-panel__label">
               {selectedChoice.isCorrect
-                ? "✓ Correct — The Clerk says:"
-                : "✗ Not quite — The Clerk says:"}
+                ? "Correct"
+                : "Not quite"}
             </div>
             <p>{selectedChoice.feedback}</p>
             <p style={{ marginTop: "var(--space-3)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
@@ -87,7 +87,7 @@ export function ScenarioCard({ scenario }: { scenario: Scenario }) {
           </div>
           <div style={{ marginTop: "var(--space-6)" }}>
             <button className="btn btn--secondary" onClick={handleReset}>
-              Try Again
+              Attempt Again
             </button>
           </div>
         </>

@@ -3,9 +3,9 @@ import { ParliamentHeader } from "@/components/ParliamentHeader";
 import "@/styles/parliament.css";
 
 export const metadata: Metadata = {
-  title: "Erskine May Training",
+  title: "Erskine May — Procedural Training",
   description:
-    "Interactive parliamentary procedure training for House of Commons staff, powered by the official Erskine May API.",
+    "An authorised training resource for the practice and procedure of the House of Commons, drawing on the 25th edition of Erskine May.",
 };
 
 export default function RootLayout({

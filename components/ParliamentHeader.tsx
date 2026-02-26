@@ -15,13 +15,13 @@ export function ParliamentHeader() {
             <rect x="0" y="24" width="32" height="3" rx="1" />
             <circle cx="16" cy="32" r="3" />
           </svg>
-          <span className="parliament-header__title">Erskine May Training</span>
+          <span className="parliament-header__title">Erskine May — Procedural Training</span>
         </Link>
 
         <nav aria-label="Main navigation">
           <ul className="parliament-header__nav">
-            <li><Link href="/">Modules</Link></li>
-            <li><Link href="/train/naming-a-member">Demo</Link></li>
+            <li><Link href="/">Chapter Index</Link></li>
+            <li><Link href="/chapter/21">Current Programme</Link></li>
           </ul>
         </nav>
       </div>

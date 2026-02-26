@@ -47,8 +47,8 @@ export default async function TrainPage({
         {/* Breadcrumbs */}
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <ol className="breadcrumbs__list">
-            <li><Link href="/">Modules</Link></li>
-            <li>Chapter 21</li>
+            <li><Link href="/">Chapter Index</Link></li>
+            <li><Link href="/chapter/21">Chapter 21</Link></li>
             <li aria-current="page">{scenario.title}</li>
           </ol>
         </nav>
@@ -61,7 +61,7 @@ export default async function TrainPage({
 
           {/* Right: Erskine May Source Text */}
           <div className="split-layout__secondary">
-            <h3 style={{ marginBottom: "var(--space-4)" }}>Authority</h3>
+            <h3 style={{ marginBottom: "var(--space-4)" }}>Source Authority</h3>
 
             {sectionData ? (
               <>

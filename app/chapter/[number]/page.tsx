@@ -19,14 +19,13 @@ export async function generateMetadata({
   const meta = getChapter(Number(number));
   if (!meta) return { title: "Not Found" };
   return {
-    title: `Chapter ${meta.number}: ${meta.title} — Erskine May Training`,
-    description: `Interactive training for ${meta.title}. ${meta.sectionCount} sections, ${meta.sprintCount} sprints.`,
+    title: `Chapter ${meta.number}: ${meta.title} — Erskine May Procedural Training`,
+    description: `Training exercises for Chapter ${meta.number}: ${meta.title}. ${meta.sectionCount} sections.`,
   };
 }
 
 function SectionTree({
   sections,
-  depth = 0,
   chapterNumber,
 }: {
   sections: ChapterSection[];
@@ -34,36 +33,49 @@ function SectionTree({
   chapterNumber: number;
 }) {
   return (
-    <ul className={`section-tree ${depth === 0 ? "section-tree--root" : ""}`}>
-      {sections.map((section) => {
-        const scenarios = DEMO_SCENARIOS.filter(
-          (s) => s.sectionId === section.id
-        );
-        return (
-          <li key={section.id} className="section-tree__item">
-            <div className="section-tree__row">
-              <span className="section-tree__id">{section.id}</span>
-              <span className="section-tree__title">{section.title}</span>
-              {scenarios.length > 0 && (
-                <Link
-                  href={`/train/${scenarios[0].id}`}
-                  className="tag tag--green"
-                >
-                  {scenarios.length} scenario{scenarios.length > 1 ? "s" : ""}
-                </Link>
-              )}
-            </div>
-            {section.subSections.length > 0 && (
-              <SectionTree
-                sections={section.subSections}
-                depth={depth + 1}
-                chapterNumber={chapterNumber}
-              />
-            )}
-          </li>
-        );
-      })}
+    <ul className="section-tree section-tree--root">
+      {sections.map((section) => (
+        <SectionNode
+          key={section.id}
+          section={section}
+          chapterNumber={chapterNumber}
+        />
+      ))}
     </ul>
+  );
+}
+
+function SectionNode({
+  section,
+  chapterNumber,
+}: {
+  section: ChapterSection;
+  chapterNumber: number;
+}) {
+  const scenarios = DEMO_SCENARIOS.filter((s) => s.sectionId === section.id);
+  return (
+    <li className="section-tree__item">
+      <div className="section-tree__row">
+        <span className="section-tree__id">{section.id}</span>
+        <span className="section-tree__title">{section.title}</span>
+        {scenarios.length > 0 && (
+          <Link href={`/train/${scenarios[0].id}`} className="tag tag--green">
+            {scenarios.length} exercise{scenarios.length > 1 ? "s" : ""}
+          </Link>
+        )}
+      </div>
+      {section.subSections.length > 0 && (
+        <ul className="section-tree">
+          {section.subSections.map((sub) => (
+            <SectionNode
+              key={sub.id}
+              section={sub}
+              chapterNumber={chapterNumber}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
   );
 }
 
@@ -86,7 +98,6 @@ export default async function ChapterPage({
     apiData = null;
   }
 
-  // Count total sections recursively
   function countSections(sections: ChapterSection[]): number {
     let count = sections.length;
     for (const s of sections) {
@@ -95,7 +106,10 @@ export default async function ChapterPage({
     return count;
   }
 
-  const totalSections = apiData ? countSections(apiData.sections) : meta.sectionCount;
+  const totalSections = apiData
+    ? countSections(apiData.sections)
+    : meta.sectionCount;
+
   const scenariosAvailable = DEMO_SCENARIOS.filter((s) => {
     if (!apiData) return false;
     const allIds = getAllSectionIds(apiData.sections);
@@ -108,22 +122,34 @@ export default async function ChapterPage({
         {/* Breadcrumbs */}
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <ol className="breadcrumbs__list">
-            <li><Link href="/">All Chapters</Link></li>
-            {part && <li>Part {part.number}: {part.title}</li>}
+            <li>
+              <Link href="/">Chapter Index</Link>
+            </li>
+            {part && (
+              <li>
+                Part {part.number}: {part.title}
+              </li>
+            )}
             <li aria-current="page">Chapter {chapterNumber}</li>
           </ol>
         </nav>
 
         {/* Chapter header */}
         <div className="chapter-header">
-          <div className="chapter-header__number">Chapter {chapterNumber}</div>
-          <h1 className="chapter-header__title">{apiData?.title || meta.title}</h1>
+          <div className="chapter-header__number">
+            Chapter {chapterNumber}
+          </div>
+          <h1 className="chapter-header__title">
+            {apiData?.title || meta.title}
+          </h1>
 
           {meta.moduleTitle && (
             <div className="chapter-header__module">
               <span className="tag tag--blue">{meta.moduleTitle}</span>
               {meta.moduleDescription && (
-                <span className="chapter-header__module-desc">{meta.moduleDescription}</span>
+                <span className="chapter-header__module-desc">
+                  {meta.moduleDescription}
+                </span>
               )}
             </div>
           )}
@@ -135,7 +161,7 @@ export default async function ChapterPage({
             </div>
             <div className="stat">
               <div className="stat__value">{meta.sprintCount}</div>
-              <div className="stat__label">Sprints</div>
+              <div className="stat__label">Exercises</div>
             </div>
             <div className="stat">
               <div className="stat__value">~{meta.sprintCount * 3}</div>
@@ -148,34 +174,46 @@ export default async function ChapterPage({
           </div>
         </div>
 
-        {/* Start training CTA */}
+        {/* Training CTA */}
         {meta.status === "available" && scenariosAvailable.length > 0 ? (
           <div className="chapter-cta">
-            <Link href={`/train/${scenariosAvailable[0].id}`} className="btn btn--primary btn--lg">
-              Start Training →
+            <Link
+              href={`/train/${scenariosAvailable[0].id}`}
+              className="btn btn--primary btn--lg"
+            >
+              Begin Exercises
             </Link>
             <span className="chapter-cta__hint">
-              Begin with Sprint 1: {scenariosAvailable[0].title}
+              Exercise 1: {scenariosAvailable[0].title}
             </span>
           </div>
         ) : (
           <div className="chapter-cta">
             <div className="update-alert">
-              <strong>Coming soon</strong> — Scenarios for this chapter are being developed.
-              The section index below shows the live Erskine May content.
+              <strong>In preparation</strong> — Training exercises for this
+              chapter are currently being developed. The section index below
+              reflects the current live text of Erskine May.
             </div>
           </div>
         )}
 
         {/* Section tree */}
         <div className="chapter-sections">
-          <h2>Sections</h2>
-          <p>Live from the Erskine May API. Sections with available training scenarios are highlighted.</p>
+          <h2>Section Index</h2>
+          <p>
+            As published in the current digital edition of Erskine May.
+            Sections with available training exercises are indicated.
+          </p>
           {apiData ? (
-            <SectionTree sections={apiData.sections} chapterNumber={chapterNumber} />
+            <SectionTree
+              sections={apiData.sections}
+              chapterNumber={chapterNumber}
+            />
           ) : (
             <div className="update-alert">
-              <strong>Unable to load sections</strong> — The Erskine May API is currently unavailable. Consult the Table Office.
+              <strong>Source unavailable</strong> — The Erskine May API is
+              currently unavailable. Consult the Table Office for the
+              authoritative text.
             </div>
           )}
         </div>
