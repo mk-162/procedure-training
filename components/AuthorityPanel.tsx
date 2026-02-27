@@ -26,15 +26,6 @@ export function AuthorityPanel({
         <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
         <p className="govuk-body-s govuk-!-margin-top-4">
           Erskine May, 25th Edition (Online) — Section {sectionId}
-          {" · "}
-          <a
-            href={`https://erskinemay.parliament.uk/section/${sectionId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="govuk-link"
-          >
-            View on Parliament.uk ↗
-          </a>
         </p>
       </div>
     </details>
