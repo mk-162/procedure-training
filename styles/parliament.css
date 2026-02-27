@@ -928,8 +928,8 @@ a:active {
 }
 
 .chapter-cta__hint {
-  font-size: 1rem;
-  color: var(--govuk-secondary-text-colour);
+  font-size: 19px;
+  color: var(--govuk-text-colour);
 }
 
 .chapter-sections {
@@ -1088,14 +1088,15 @@ a:active {
 .btn--primary:visited,
 .btn--primary:hover,
 .btn--primary:active {
-  background: var(--parliament-green);
-  color: #fff;
+  background-color: var(--parliament-green);
+  color: #fff !important;
   border-color: var(--parliament-green);
 }
 
 .btn--primary:hover {
-  background: var(--parliament-green-dark);
+  background-color: var(--parliament-green-dark);
   border-color: var(--parliament-green-dark);
+  color: #fff !important;
 }
 
 .btn--primary:focus:not(:active):not(:hover) {
