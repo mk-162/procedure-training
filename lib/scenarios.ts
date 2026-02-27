@@ -79,21 +79,21 @@ export const DEMO_SCENARIOS: Scenario[] = [
         text: "The speech should be uncontroversial in tone",
         isCorrect: false,
         feedback:
-          "This is indeed a well-established convention. Maiden speeches are traditionally non-partisan in character, allowing the new Member to introduce themselves to the House without provoking division.",
+          "Not quite. An uncontroversial tone is indeed a well-established convention for maiden speeches — so this IS a recognised convention, not the odd one out. Look for the option that reverses an actual convention.",
       },
       {
         id: "b",
         text: "The Member should pay tribute to their predecessor",
         isCorrect: false,
         feedback:
-          "Correct — this is a convention. It is customary for a new Member to speak generously of their predecessor, regardless of party, as a mark of respect for the constituency's parliamentary history.",
+          "Not quite. Paying tribute to one's predecessor is a long-standing convention — new Members customarily speak generously of their predecessor regardless of party. This IS a recognised convention, not the odd one out.",
       },
       {
         id: "c",
         text: "The Member should refer to their constituency",
         isCorrect: false,
         feedback:
-          "This is indeed conventional. New Members typically describe their constituency, its character and concerns, as a way of establishing their connection to the place they represent.",
+          "Not quite. Referring to one's constituency is indeed conventional — new Members typically describe their constituency, its character and concerns. This IS a recognised convention, not the odd one out.",
       },
       {
         id: "d",
