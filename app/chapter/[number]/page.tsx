@@ -20,7 +20,7 @@ export async function generateMetadata({
   if (!meta) return { title: "Not Found" };
   return {
     title: `Chapter ${meta.number}: ${meta.title} — Erskine May procedural training`,
-    description: `Training exercises for chapter ${meta.number}: ${meta.title}. ${meta.sectionCount} sections.`,
+    description: `Training exercises for chapter ${meta.number}: ${meta.title}. Scenario-based learning for House of Commons procedure.`,
   };
 }
 
@@ -152,9 +152,9 @@ export default async function ChapterPage({
           <div className="chapter-header__number">
             Chapter {chapterNumber}
           </div>
-          <h1 className="chapter-header__title">
+          <h2 className="chapter-header__title">
             {apiData?.title || meta.title}
-          </h1>
+          </h2>
 
           {meta.moduleTitle && (
             <div className="chapter-header__module">
