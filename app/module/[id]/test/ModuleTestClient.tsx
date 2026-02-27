@@ -50,7 +50,7 @@ export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<ty
       <main className="govuk-main-wrapper" id="main-content">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <span className="govuk-caption-xl">Chapter {module.chapterNumber} · Test</span>
+            <span className="govuk-caption-xl">Chapter {module.chapterNumber} · Exercise</span>
             <h1 className="govuk-heading-xl">{module.title}</h1>
 
             {currentScenario ? (
@@ -71,7 +71,7 @@ export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<ty
               <>
                 <p className="govuk-body">No test scenarios available for this module yet.</p>
                 <Link href={`/module/${module.id}/summary`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
-                  Continue without test
+                  Continue without exercise
                 </Link>
               </>
             )}

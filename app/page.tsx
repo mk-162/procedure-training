@@ -45,7 +45,7 @@ export default function DashboardPage() {
                   <p className="govuk-body govuk-!-margin-bottom-4">
                     Work through structured programmes covering key areas of
                     parliamentary procedure. Each programme guides you through
-                    learn, practice, and test stages to build your knowledge.
+                    learn, practice, and exercise stages to build your knowledge.
                   </p>
                   <Link href="/library" className="govuk-button govuk-button--start" data-module="govuk-button">
                     Choose a programme

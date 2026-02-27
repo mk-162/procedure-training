@@ -124,7 +124,7 @@ export default async function SectionPage({
                 <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
                 <h2 className="govuk-heading-m">Practise what you have learned</h2>
                 <p className="govuk-body">
-                  Test your understanding with {exercises.length === 1 ? "a scenario-based exercise" : `${exercises.length} exercises`}.
+                  Put your understanding into practice with {exercises.length === 1 ? "a scenario-based exercise" : `${exercises.length} exercises`}.
                 </p>
                 <ul className="govuk-task-list">
                   {exercises.map((ex) => (

@@ -68,7 +68,7 @@ export function ModuleSummaryClient({ module }: { module: NonNullable<ReturnType
               )}
               {!passed && (
                 <Link href={`/module/${module.id}/practice`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
-                  Practice again
+                  Repeat the exercises
                 </Link>
               )}
               <Link href={programme ? `/programme/${programme.slug}` : "/"} className="govuk-link">

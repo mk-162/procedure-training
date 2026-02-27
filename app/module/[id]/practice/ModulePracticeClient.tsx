@@ -54,16 +54,16 @@ export function ModulePracticeClient({ module }: { module: NonNullable<ReturnTyp
                   </div>
                   <div className="govuk-notification-banner__content">
                     <p className="govuk-body">
-                      You have completed all {scenarios.length} practice {scenarios.length === 1 ? "exercise" : "exercises"}. You can try again or move on to the test.
+                      You have completed all {scenarios.length} practice {scenarios.length === 1 ? "exercise" : "exercises"}.
                     </p>
                   </div>
                 </div>
                 <div className="govuk-button-group">
                   <Link href={`/module/${module.id}/test`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
-                    Take the test
+                    Continue to exercise
                   </Link>
                   <button className="govuk-button govuk-button--secondary" data-module="govuk-button" onClick={() => { setCurrentIndex(0); setPracticeComplete(false); }}>
-                    Try again
+                    Repeat the practice
                   </button>
                 </div>
               </>
@@ -84,7 +84,7 @@ export function ModulePracticeClient({ module }: { module: NonNullable<ReturnTyp
               <>
                 <p className="govuk-body">No practice scenarios available for this module yet.</p>
                 <Link href={`/module/${module.id}/test`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
-                  Take the test
+                  Continue to exercise
                 </Link>
               </>
             )}
