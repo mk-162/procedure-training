@@ -1,110 +1,155 @@
+"use client";
+
 import Link from "next/link";
-import { PARTS, TOTAL_CHAPTERS, TOTAL_SECTIONS } from "@/lib/chapter-data";
+import { useProgress } from "@/lib/progress";
+import { PROGRAMMES } from "@/lib/programmes";
 
-export default function HomePage() {
-  const availableCount = PARTS.flatMap((p) => p.chapters).filter(
-    (c) => c.status === "available"
-  ).length;
+export default function DashboardPage() {
+  const { isLoaded, getProgrammeProgress, getNextModule, isFirstVisit } = useProgress();
 
-  return (
-    <>
-      {/* Page title banner (white, like parliament.uk) */}
+  if (!isLoaded) {
+    return (
       <div className="parliament-banner">
         <div className="container">
           <h1>Erskine May</h1>
-          <p className="lead">
-            Procedural training · {TOTAL_CHAPTERS} chapters ·{" "}
-            {TOTAL_SECTIONS} sections · synchronised with the live digital
-            edition
-          </p>
+          <p className="lead">Loading your training...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const firstVisit = isFirstVisit();
+
+  return (
+    <>
+      {/* Page title banner */}
+      <div className="parliament-banner">
+        <div className="container">
+          <h1>Erskine May</h1>
+          <p className="lead">Procedural training for Parliament</p>
         </div>
       </div>
 
       <main id="main-content" className="page-content page-content--grey">
         <div className="container">
+          {firstVisit ? (
+            /* Welcome state for first-time users */
+            <section className="block block--accent">
+              <h2>Welcome to Erskine May training</h2>
+              <p className="lead">
+                This training platform helps you learn parliamentary procedure
+                through interactive exercises based on Erskine May, the
+                authoritative guide to parliamentary law and practice.
+              </p>
+              <p>
+                Work through structured programmes covering key areas of
+                parliamentary procedure. Each programme guides you through
+                learn, practice, and test stages to build your knowledge.
+              </p>
+              <div style={{ marginTop: "var(--space-6)" }}>
+                <Link href="/library" className="btn btn--primary btn--large">
+                  Choose a programme
+                </Link>
+              </div>
+            </section>
+          ) : (
+            /* Returning user state */
+            <section className="block block--accent">
+              <h2>Continue where you left off</h2>
+              {PROGRAMMES.map((programme) => {
+                const progProgress = getProgrammeProgress(programme.moduleIds);
+                const nextModule = getNextModule(programme.moduleIds);
+                const isComplete = progProgress.completed === progProgress.total && progProgress.total > 0;
 
-          {/* Recommended programme */}
-          <section className="block block--accent">
-            <div className="featured-module__eyebrow">Recommended programme</div>
-            <h2 className="featured-module__title">
-              Procedure in the House of Commons
-            </h2>
-            <p className="featured-module__body">
-              This programme covers the core procedural knowledge you need to
-              support Members in the Chamber. It takes you from the ordering of
-              business through to the maintenance of order and the tabling of
-              Questions. Based on chapters 17 to 22 of Erskine May.
-            </p>
-            <div className="featured-module__chapters">
-              {PARTS[2].chapters
-                .filter((c) => c.moduleTitle)
-                .map((ch) => (
-                  <Link
-                    key={ch.number}
-                    href={`/chapter/${ch.number}`}
-                    className={`featured-module__card ${ch.status === "coming-soon" ? "featured-module__card--locked" : ""}`}
-                  >
-                    <span className="featured-module__card-number">
-                      Chapter {ch.number}
-                    </span>
-                    <span className="featured-module__card-title">
-                      {ch.moduleTitle}
-                    </span>
-                    <span className="featured-module__card-desc">
-                      {ch.moduleDescription}
-                    </span>
-                    {ch.status === "available" ? (
-                      <span className="tag tag--green">Available</span>
-                    ) : (
-                      <span className="tag tag--grey">In preparation</span>
-                    )}
-                  </Link>
-                ))}
-            </div>
-          </section>
-
-          {/* Full chapter index by part */}
-          <section className="block block--spaced">
-            <h2>Complete chapter index</h2>
-            <p>
-              Erskine May is organised into {PARTS.length} parts. Select a
-              chapter to view its sections and start training exercises where
-              they are available.
-            </p>
-
-            {PARTS.map((part) => (
-              <div key={part.number} className="part-group">
-                <h3 className="part-group__title">
-                  <span className="part-group__number">Part {part.number}</span>
-                  {part.title}
-                </h3>
-                <div className="chapter-list">
-                  {part.chapters.map((ch) => (
-                    <Link
-                      key={ch.number}
-                      href={`/chapter/${ch.number}`}
-                      className={`chapter-list__item ${ch.status === "coming-soon" ? "chapter-list__item--locked" : ""}`}
-                    >
-                      <div className="chapter-list__number">{ch.number}</div>
-                      <div className="chapter-list__body">
-                        <div className="chapter-list__title">{ch.title}</div>
-                        <div className="chapter-list__meta">
-                          {ch.sectionCount} sections ·{" "}
-                          {ch.sprintCount} exercises ·{" "}
-                          about {ch.sprintCount * 3} minutes
-                          {ch.status === "available" && (
-                            <span className="tag tag--green chapter-list__tag">
-                              Available
-                            </span>
-                          )}
+                return (
+                  <div key={programme.slug}>
+                    <div className="progress-overview">
+                      <div className="progress-overview__info">
+                        <h3>{programme.title}</h3>
+                        <p>
+                          {progProgress.completed} of {progProgress.total} modules completed
+                          {progProgress.averageScore > 0 && ` · Average score: ${progProgress.averageScore}%`}
+                        </p>
+                      </div>
+                      <div className="progress-overview__bar">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            "--progress": `${(progProgress.completed / progProgress.total) * 100}%`,
+                          } as React.CSSProperties}
+                        >
+                          <div className="progress-bar__fill" />
                         </div>
                       </div>
-                      <div className="chapter-list__arrow">→</div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+                    </div>
+                    {!isComplete && nextModule && (
+                      <div style={{ marginTop: "var(--space-4)" }}>
+                        <Link
+                          href={`/module/${nextModule}/learn`}
+                          className="btn btn--primary"
+                        >
+                          {progProgress.completed === 0 ? "Start programme" : "Continue next module"}
+                        </Link>
+                      </div>
+                    )}
+                    {isComplete && (
+                      <div style={{ marginTop: "var(--space-4)" }}>
+                        <Link
+                          href={`/programme/${programme.slug}`}
+                          className="btn btn--secondary"
+                        >
+                          Review programme
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </section>
+          )}
+
+          {/* Programme cards */}
+          <section className="block block--spaced">
+            <h2>Available programmes</h2>
+            <div className="programme-grid">
+              {PROGRAMMES.map((programme) => {
+                const progProgress = getProgrammeProgress(programme.moduleIds);
+                const progressPercent = progProgress.total > 0
+                  ? Math.round((progProgress.completed / progProgress.total) * 100)
+                  : 0;
+
+                return (
+                  <Link
+                    key={programme.slug}
+                    href={`/programme/${programme.slug}`}
+                    className="programme-card"
+                  >
+                    <div className="programme-card__header">
+                      <h3 className="programme-card__title">{programme.title}</h3>
+                      <span className="programme-card__modules">
+                        {programme.moduleIds.length} modules · about {programme.estimatedMinutes} minutes
+                      </span>
+                    </div>
+                    <p className="programme-card__description">
+                      {programme.description}
+                    </p>
+                    {progProgress.total > 0 && (
+                      <div className="programme-card__progress">
+                        <div
+                          className="progress-bar"
+                          style={{ "--progress": `${progressPercent}%` } as React.CSSProperties}
+                        >
+                          <div className="progress-bar__fill" />
+                        </div>
+                        <span className="programme-card__progress-text">
+                          {progProgress.completed}/{progProgress.total} completed
+                        </span>
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
           </section>
         </div>
       </main>
