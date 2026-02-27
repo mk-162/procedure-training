@@ -497,19 +497,28 @@ a:active {
   background-color: var(--govuk-template-background-colour);
 }
 
+/* Breadcrumbs on grey background need spacing below */
+.page-content--grey .breadcrumbs,
+.breadcrumbs--grey {
+  background: var(--govuk-template-background-colour);
+  margin-bottom: 20px;
+}
+
 /* ===================================
    BREADCRUMBS (using govuk-breadcrumbs)
    =================================== */
 .breadcrumbs {
-  padding: 15px 0;
+  padding: 10px 0;
   border-bottom: 1px solid var(--govuk-border-colour);
-  margin-bottom: 30px;
+  margin-bottom: 0;
+  background: transparent;
 }
 
 .breadcrumbs__list {
   list-style: none;
   display: flex;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.25rem;
   font-size: 1rem;
   line-height: 1.25;
   color: var(--govuk-secondary-text-colour);
@@ -518,7 +527,7 @@ a:active {
 }
 
 .breadcrumbs__list li:not(:last-child)::after {
-  content: "›";
+  content: ">";
   margin-left: 0.5rem;
   color: var(--govuk-secondary-text-colour);
 }
