@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { ParliamentHeader } from "@/components/ParliamentHeader";
 import { ParliamentFooter } from "@/components/ParliamentFooter";
+import { GovukInit } from "@/components/GovukInit";
 
 /* GOV.UK Frontend (compiled via Sass) + Parliamentary overrides */
 import "@/styles/main.scss";
@@ -35,6 +36,7 @@ export default function RootLayout({
           href="#main-content"
           className="govuk-skip-link"
           data-module="govuk-skip-link"
+          suppressHydrationWarning
         >
           Skip to main content
         </a>
@@ -42,12 +44,7 @@ export default function RootLayout({
         <div className="parliament-accent-bar" aria-hidden="true" />
         {children}
         <ParliamentFooter />
-        <script
-          type="module"
-          dangerouslySetInnerHTML={{
-            __html: `import { initAll } from '/govuk-frontend.min.js'; initAll();`,
-          }}
-        />
+        <GovukInit />
       </body>
     </html>
   );
