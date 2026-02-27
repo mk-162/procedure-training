@@ -9,6 +9,7 @@ import type { getModuleById } from "@/lib/modules";
 
 export function ModulePracticeClient({ module }: { module: NonNullable<ReturnType<typeof getModuleById>> }) {
   const { startModule, isLoaded } = useProgress();
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [practiceComplete, setPracticeComplete] = useState(false);
 
   if (!isLoaded) {
@@ -16,12 +17,21 @@ export function ModulePracticeClient({ module }: { module: NonNullable<ReturnTyp
   }
 
   const programme = PROGRAMMES.find((p) => p.moduleIds.includes(module.id));
-  const scenarioId = module.scenarioIds[0];
-  const scenario = scenarioId ? getScenarioById(scenarioId) : null;
+  const scenarios = module.scenarioIds
+    .map((id) => getScenarioById(id))
+    .filter((s): s is NonNullable<ReturnType<typeof getScenarioById>> => s !== undefined);
 
-  const handleComplete = () => {
-    startModule(module.id);
-    setPracticeComplete(true);
+  const currentScenario = scenarios[currentIndex];
+
+  const handleScenarioComplete = () => {
+    if (currentIndex < scenarios.length - 1) {
+      // Move to next scenario
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // All scenarios done
+      startModule(module.id);
+      setPracticeComplete(true);
+    }
   };
 
   return (
@@ -43,24 +53,33 @@ export function ModulePracticeClient({ module }: { module: NonNullable<ReturnTyp
                     <h2 className="govuk-notification-banner__title" id="practice-success-title">Well done</h2>
                   </div>
                   <div className="govuk-notification-banner__content">
-                    <p className="govuk-body">You have completed the practice exercise. You can try again or move on to the test.</p>
+                    <p className="govuk-body">
+                      You have completed all {scenarios.length} practice {scenarios.length === 1 ? "exercise" : "exercises"}. You can try again or move on to the test.
+                    </p>
                   </div>
                 </div>
                 <div className="govuk-button-group">
-                  <button className="govuk-button govuk-button--secondary" data-module="govuk-button" onClick={() => setPracticeComplete(false)}>
-                    Try again
-                  </button>
                   <Link href={`/module/${module.id}/test`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
                     Take the test
                   </Link>
+                  <button className="govuk-button govuk-button--secondary" data-module="govuk-button" onClick={() => { setCurrentIndex(0); setPracticeComplete(false); }}>
+                    Try again
+                  </button>
                 </div>
               </>
-            ) : scenario ? (
-              <ScenarioExercise
-                scenario={scenario}
-                onComplete={handleComplete}
-                paragraphRef={scenario.paragraphRef}
-              />
+            ) : currentScenario ? (
+              <>
+                {scenarios.length > 1 && (
+                  <p className="govuk-body govuk-!-margin-bottom-6">
+                    Exercise {currentIndex + 1} of {scenarios.length}
+                  </p>
+                )}
+                <ScenarioExercise
+                  key={currentScenario.id}
+                  scenario={currentScenario}
+                  onComplete={handleScenarioComplete}
+                />
+              </>
             ) : (
               <>
                 <p className="govuk-body">No practice scenarios available for this module yet.</p>
@@ -79,11 +98,9 @@ export function ModulePracticeClient({ module }: { module: NonNullable<ReturnTyp
 function ScenarioExercise({
   scenario,
   onComplete,
-  paragraphRef,
 }: {
   scenario: NonNullable<ReturnType<typeof getScenarioById>>;
   onComplete: () => void;
-  paragraphRef: string;
 }) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
@@ -93,9 +110,6 @@ function ScenarioExercise({
   const handleSubmit = () => {
     if (!selectedId) return;
     setRevealed(true);
-    if (selectedChoice?.isCorrect) {
-      setTimeout(() => onComplete(), 500);
-    }
   };
 
   return (
@@ -149,9 +163,21 @@ function ScenarioExercise({
             </div>
           </div>
           <div className="govuk-inset-text">
-            Source: Erskine May, ¶{paragraphRef}
+            Source: Erskine May, ¶{scenario.paragraphRef} —{" "}
+            <a
+              href={scenario.sectionUrl}
+              className="govuk-link"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              Read on erskinemay.parliament.uk
+            </a>
           </div>
-          {!selectedChoice.isCorrect && (
+          {selectedChoice.isCorrect ? (
+            <button className="govuk-button" data-module="govuk-button" onClick={onComplete}>
+              Continue
+            </button>
+          ) : (
             <button className="govuk-button govuk-button--secondary" data-module="govuk-button" onClick={() => { setSelectedId(null); setRevealed(false); }}>
               Try again
             </button>

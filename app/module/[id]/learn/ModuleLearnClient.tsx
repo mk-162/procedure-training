@@ -50,6 +50,7 @@ export function ModuleLearnClient({ module }: { module: NonNullable<ReturnType<t
                   title={module.title}
                   contentHtml={module.authorityContent}
                   sectionId={module.sectionId || 0}
+                  sectionUrl={module.sectionUrl}
                   paragraphRef={module.paragraphRef}
                 />
               )}

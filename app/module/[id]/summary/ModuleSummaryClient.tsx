@@ -18,7 +18,7 @@ export function ModuleSummaryClient({ module }: { module: NonNullable<ReturnType
 
   const moduleProgress = getModuleProgress(module.id);
   const finalScore = score ?? moduleProgress.score ?? 0;
-  const passed = finalScore >= 100;
+  const passed = finalScore >= 67; // Pass threshold: 2 out of 3 correct
 
   const programme = PROGRAMMES.find((p) => p.moduleIds.includes(module.id));
   const moduleIndex = programme?.moduleIds.indexOf(module.id) ?? 0;
@@ -44,7 +44,7 @@ export function ModuleSummaryClient({ module }: { module: NonNullable<ReturnType
               <>
                 <h1 className="govuk-heading-xl">Not quite there</h1>
                 <p className="govuk-body-l">
-                  You scored {finalScore}%. You need 100% to pass. Try the practice exercise again.
+                  You scored {finalScore}%. You need at least 67% to pass. Review the material and try again.
                 </p>
               </>
             )}

@@ -8,6 +8,7 @@ export interface Module {
   title: string;
   chapterNumber: number;
   sectionId?: number;
+  sectionUrl?: string;
   paragraphRef?: string;
   scenarioIds: string[];
   timeEstimate: number; // minutes
@@ -21,10 +22,11 @@ export const MODULES: Module[] = [
     id: "naming-a-member",
     title: "Naming a Member",
     chapterNumber: 21,
-    sectionId: 4880,
+    sectionId: 4901,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4901/proceedings-on-the-naming-of-a-member",
     paragraphRef: "21.24",
-    scenarioIds: ["naming-a-member"],
-    timeEstimate: 6,
+    scenarioIds: ["naming-a-member", "maiden-speech", "unparliamentary-language"],
+    timeEstimate: 8,
     briefing:
       "Under Standing Order No. 44, if a Member persists in disregarding the authority of the Chair after being warned, the Speaker has the power to 'name' that Member. This is a grave step in the disciplinary procedures of the House.\n\nWhen a Member is named, the Speaker formally states that the Member is named for disregarding the authority of the Chair. A motion is then immediately put to the House without debate (except for the mover and seconder) for the Member's suspension.\n\nThe suspension typically lasts for the remainder of the sitting day for a first offence, but can extend to longer periods for repeated offences. This procedure is the most serious disciplinary power the Speaker exercises in the Chamber, reflecting the House's commitment to maintaining order and respect for the Chair.",
     authorityContent:
@@ -41,6 +43,7 @@ export const MODULES: Module[] = [
     title: "Maiden Speech Conventions",
     chapterNumber: 21,
     sectionId: 4857,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4857/new-members-maiden-speeches",
     paragraphRef: "21.7",
     scenarioIds: ["maiden-speech"],
     timeEstimate: 5,
@@ -59,7 +62,8 @@ export const MODULES: Module[] = [
     id: "unparliamentary-language",
     title: "Unparliamentary Language",
     chapterNumber: 21,
-    sectionId: 4869,
+    sectionId: 4870,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4870/requirement-for-respectful-and-parliamentary-language",
     paragraphRef: "21.19",
     scenarioIds: ["unparliamentary-language"],
     timeEstimate: 5,

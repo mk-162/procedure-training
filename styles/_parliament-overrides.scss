@@ -71,6 +71,34 @@
   background-color: #FBCF20;
 }
 
+/* ─── Header layout + white text/logo on purple (v6 class fixes) ─── */
+.govuk-header__container {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.govuk-header__homepage-link {
+  color: #fff;
+  text-decoration: none;
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: #fff;
+  }
+}
+
+.govuk-header__logotype {
+  fill: #fff;
+}
+
+.govuk-header__product-name {
+  color: #fff;
+}
+
 /* ─── Service navigation border ─── */
 .govuk-service-navigation {
   border-bottom-color: #006E46;

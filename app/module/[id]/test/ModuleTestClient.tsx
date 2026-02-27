@@ -9,15 +9,37 @@ import { useState } from "react";
 import type { getModuleById } from "@/lib/modules";
 
 export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<typeof getModuleById>> }) {
-  const { isLoaded } = useProgress();
+  const { isLoaded, startModule, completeModule } = useProgress();
+  const router = useRouter();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
 
   if (!isLoaded) {
     return null;
   }
 
   const programme = PROGRAMMES.find((p) => p.moduleIds.includes(module.id));
-  const scenarioId = module.scenarioIds[0];
-  const scenario = scenarioId ? getScenarioById(scenarioId) : null;
+  const scenarios = module.scenarioIds
+    .map((id) => getScenarioById(id))
+    .filter((s): s is NonNullable<ReturnType<typeof getScenarioById>> => s !== undefined);
+
+  const currentScenario = scenarios[currentIndex];
+  const totalQuestions = scenarios.length;
+
+  const handleQuestionComplete = (wasCorrect: boolean) => {
+    const newCorrect = wasCorrect ? correctCount + 1 : correctCount;
+    setCorrectCount(newCorrect);
+
+    if (currentIndex < scenarios.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // Test complete — calculate score and navigate to summary
+      const score = Math.round((newCorrect / totalQuestions) * 100);
+      startModule(module.id);
+      completeModule(module.id, score);
+      router.push(`/module/${module.id}/summary?score=${score}`);
+    }
+  };
 
   return (
     <div className="govuk-width-container">
@@ -31,8 +53,20 @@ export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<ty
             <span className="govuk-caption-xl">Chapter {module.chapterNumber} · Test</span>
             <h1 className="govuk-heading-xl">{module.title}</h1>
 
-            {scenario ? (
-              <TestExercise moduleId={module.id} scenario={scenario} />
+            {currentScenario ? (
+              <>
+                {totalQuestions > 1 && (
+                  <p className="govuk-body govuk-!-margin-bottom-6">
+                    Question {currentIndex + 1} of {totalQuestions}
+                  </p>
+                )}
+                <TestQuestion
+                  key={currentScenario.id}
+                  scenario={currentScenario}
+                  onComplete={handleQuestionComplete}
+                  isLastQuestion={currentIndex === scenarios.length - 1}
+                />
+              </>
             ) : (
               <>
                 <p className="govuk-body">No test scenarios available for this module yet.</p>
@@ -48,31 +82,23 @@ export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<ty
   );
 }
 
-function TestExercise({
-  moduleId,
+function TestQuestion({
   scenario,
+  onComplete,
+  isLastQuestion,
 }: {
-  moduleId: string;
   scenario: NonNullable<ReturnType<typeof getScenarioById>>;
+  onComplete: (wasCorrect: boolean) => void;
+  isLastQuestion: boolean;
 }) {
-  const router = useRouter();
-  const { completeModule, startModule } = useProgress();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
-  const [score, setScore] = useState<number | null>(null);
 
   const selectedChoice = scenario.choices.find((c) => c.id === selectedId);
 
   const handleSubmit = () => {
     if (!selectedId) return;
     setRevealed(true);
-    const isCorrect = selectedChoice?.isCorrect ?? false;
-    const scoreValue = isCorrect ? 100 : 0;
-    setScore(scoreValue);
-    if (isCorrect) {
-      startModule(moduleId);
-      completeModule(moduleId, scoreValue);
-    }
   };
 
   return (
@@ -126,10 +152,18 @@ function TestExercise({
             </div>
           </div>
           <div className="govuk-inset-text">
-            Source: Erskine May, ¶{scenario.paragraphRef}
+            Source: Erskine May, ¶{scenario.paragraphRef} —{" "}
+            <a
+              href={scenario.sectionUrl}
+              className="govuk-link"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              Read on erskinemay.parliament.uk
+            </a>
           </div>
-          <button className="govuk-button" data-module="govuk-button" onClick={() => router.push(`/module/${moduleId}/summary?score=${score}`)}>
-            View results
+          <button className="govuk-button" data-module="govuk-button" onClick={() => onComplete(selectedChoice.isCorrect)}>
+            {isLastQuestion ? "View results" : "Next question"}
           </button>
         </>
       )}

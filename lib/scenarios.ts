@@ -11,6 +11,7 @@ export interface ScenarioChoice {
 export interface Scenario {
   id: string;
   sectionId: number;
+  sectionUrl: string; // Full URL on erskinemay.parliament.uk
   paragraphRef: string;
   title: string;
   context: string; // "The Move" — sets the scene
@@ -23,7 +24,8 @@ export interface Scenario {
 export const DEMO_SCENARIOS: Scenario[] = [
   {
     id: "naming-a-member",
-    sectionId: 4880,
+    sectionId: 4901,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4901/proceedings-on-the-naming-of-a-member",
     paragraphRef: "21.24",
     title: "Naming a Member",
     context:
@@ -65,6 +67,7 @@ export const DEMO_SCENARIOS: Scenario[] = [
   {
     id: "maiden-speech",
     sectionId: 4857,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4857/new-members-maiden-speeches",
     paragraphRef: "21.7",
     title: "Maiden Speech Conventions",
     context:
@@ -104,7 +107,8 @@ export const DEMO_SCENARIOS: Scenario[] = [
   },
   {
     id: "unparliamentary-language",
-    sectionId: 4869,
+    sectionId: 4870,
+    sectionUrl: "https://erskinemay.parliament.uk/section/4870/requirement-for-respectful-and-parliamentary-language",
     paragraphRef: "21.19",
     title: "Unparliamentary Language",
     context:

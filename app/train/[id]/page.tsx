@@ -73,6 +73,7 @@ export default async function TrainPage({
                   title={sectionData.title}
                   contentHtml={sectionData.contentHtml}
                   sectionId={sectionData.id}
+                  sectionUrl={scenario.sectionUrl}
                   paragraphRef={scenario.paragraphRef}
                 />
                 <p className="govuk-body-s govuk-!-margin-top-4">
