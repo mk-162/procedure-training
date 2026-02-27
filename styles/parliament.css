@@ -503,8 +503,8 @@ a:active {
 }
 
 .parliament-header__logo svg {
-  width: 32px;
-  height: 36px;
+  height: 40px;
+  width: auto;
 }
 
 .parliament-header__title {
