@@ -892,6 +892,22 @@ a:active {
   font-weight: 500;
 }
 
+.section-tree__title-link,
+.section-tree__title-link:link,
+.section-tree__title-link:visited {
+  flex: 1;
+  font-weight: 500;
+  color: var(--govuk-text-colour);
+  text-decoration: underline;
+  text-decoration-color: var(--govuk-border-colour);
+  text-underline-offset: 3px;
+}
+
+.section-tree__title-link:hover {
+  color: var(--parliament-green);
+  text-decoration-color: var(--parliament-green);
+}
+
 /* ===================================
    TAGS / BADGES
    Using GOV.UK tag as base, with
@@ -1226,6 +1242,163 @@ a:active {
 /* ===================================
    SOURCE AUTHORITY (Train page)
    =================================== */
+/* ===================================
+   SECTION PAGE
+   Teaching view — displays Erskine May
+   source text with footnotes, exercises
+   and prev/next navigation
+   =================================== */
+.section-page__meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.section-page__ref {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--parliament-green);
+}
+
+.section-page__content {
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  max-width: 42em;
+}
+
+.section-page__content p {
+  margin-bottom: 20px;
+}
+
+.section-page__content .paragraph-reference {
+  font-weight: 700;
+  color: var(--parliament-green);
+  margin-right: 5px;
+}
+
+.section-page__content .footnote-ref {
+  font-size: 0.75rem;
+  vertical-align: super;
+  text-decoration: none;
+  color: var(--parliament-blue);
+  margin-left: 2px;
+}
+
+/* Footnotes */
+.section-page__footnotes {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--govuk-border-colour);
+}
+
+.section-page__footnotes h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.section-page__footnotes ol {
+  padding-left: 20px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--govuk-secondary-text-colour);
+}
+
+.section-page__footnotes li {
+  margin-bottom: 10px;
+}
+
+.section-page__footnotes a {
+  word-break: break-all;
+}
+
+/* Subsections list */
+.section-page__subsections {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.section-page__subsections li {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--govuk-border-colour);
+}
+
+.section-page__subsections li:first-child {
+  border-top: 1px solid var(--govuk-border-colour);
+}
+
+.section-page__subsections a,
+.section-page__subsections a:link,
+.section-page__subsections a:visited {
+  color: var(--govuk-text-colour);
+  text-decoration: underline;
+}
+
+.section-page__subsections a:hover {
+  color: var(--parliament-green);
+}
+
+/* Exercise links */
+.section-page__exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.section-page__exercise-link,
+.section-page__exercise-link:link,
+.section-page__exercise-link:visited {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 2px solid var(--govuk-border-colour);
+  text-decoration: none;
+  color: var(--govuk-text-colour);
+  transition: border-color 0.15s;
+}
+
+.section-page__exercise-link:hover {
+  border-color: var(--parliament-green);
+}
+
+.section-page__exercise-link span {
+  font-size: 1rem;
+  color: var(--govuk-secondary-text-colour);
+}
+
+.section-page__exercise-link .tag {
+  align-self: flex-start;
+}
+
+/* Section prev/next navigation */
+.section-page__nav-links {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.section-page__nav-prev,
+.section-page__nav-next {
+  font-size: 1rem;
+  max-width: 45%;
+}
+
+.section-page__nav-next {
+  text-align: right;
+  margin-left: auto;
+}
+
+.section-page__nav-up {
+  padding-top: 15px;
+  border-top: 1px solid var(--govuk-border-colour);
+  font-size: 1rem;
+}
+
 .source-authority__heading {
   margin-bottom: 20px;
 }

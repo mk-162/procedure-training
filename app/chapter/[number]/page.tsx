@@ -57,7 +57,9 @@ function SectionNode({
     <li className="section-tree__item">
       <div className="section-tree__row">
         <span className="section-tree__id">{section.id}</span>
-        <span className="section-tree__title">{section.title}</span>
+        <Link href={`/section/${section.id}`} className="section-tree__title-link">
+          {section.title}
+        </Link>
         {scenarios.length > 0 && (
           <Link href={`/train/${scenarios[0].id}`} className="tag tag--green">
             {scenarios.length} exercise{scenarios.length > 1 ? "s" : ""}
