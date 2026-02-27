@@ -38,34 +38,8 @@
   font-family: 'National', 'GDS Transport', arial, sans-serif;
 }
 
-/* ─── 3. Header background: Parliament purple #373151 ─── */
-.govuk-header {
-  background: #373151;
-  border-bottom: none;
-}
-
-.govuk-header__container {
-  border-bottom-color: rgba(255, 255, 255, 0.2);
-}
-
-/* ─── 4. Footer background: Parliament purple #373151 ─── */
-.govuk-footer {
-  background: #373151;
-  border-top: none;
-}
-
-.govuk-footer__link:link,
-.govuk-footer__link:visited {
-  color: #fff;
-}
-
-.govuk-footer__link:hover {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.govuk-footer__meta-item {
-  color: rgba(255, 255, 255, 0.7);
-}
+/* ─── 3. Header/Footer colours set via $govuk-functional-colours in main.scss ─── */
+/* No CSS overrides needed — Sass variable handles Parliament purple brand */
 
 /* ─── 5. Button colour: Commons Green #006E46 ─── */
 .govuk-button {

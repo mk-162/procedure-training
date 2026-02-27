@@ -3,8 +3,18 @@
 // GOV.UK Frontend (via Sass) + Parliamentary overrides
 // ===================================
 
-// 1. Import all of GOV.UK Frontend
+// 1. Override GOV.UK brand colours BEFORE importing govuk-frontend
+//    This changes the header, footer, and all brand-derived colours
+$govuk-functional-colours: (
+  // Parliament purple instead of GOV.UK blue
+  brand: #373151,
+  // Keep footer/surfaces matching Parliament brand
+  template-background: #f3f2f1,
+  surface-background: #f3f2f1,
+);
+
+// 2. Import all of GOV.UK Frontend
 @import "../node_modules/govuk-frontend/dist/govuk";
 
-// 2. Import Parliament-specific overrides
+// 3. Import Parliament-specific overrides (font, button colour, focus colour)
 @import "parliament-overrides";
