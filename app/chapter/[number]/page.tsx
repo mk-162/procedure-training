@@ -152,9 +152,6 @@ export default async function ChapterPage({
           <div className="chapter-header__number">
             Chapter {chapterNumber}
           </div>
-          <h2 className="chapter-header__title">
-            {apiData?.title || meta.title}
-          </h2>
 
           {meta.moduleTitle && (
             <div className="chapter-header__module">
