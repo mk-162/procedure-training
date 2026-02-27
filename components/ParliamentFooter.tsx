@@ -3,7 +3,7 @@ import Link from "next/link";
 export function ParliamentFooter() {
   return (
     <footer className="govuk-footer" role="contentinfo" data-module="govuk-footer">
-      <div className="govuk-footer__container">
+      <div className="govuk-width-container">
         <div className="govuk-footer__meta">
           <div className="govuk-footer__meta-item govuk-footer__meta-item--grow">
             <h2 className="govuk-footer__heading govuk-visually-hidden">Support links</h2>
