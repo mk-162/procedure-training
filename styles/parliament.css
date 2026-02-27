@@ -287,7 +287,7 @@ p, .govuk-body {
   line-height: 25px;
   margin-top: 0;
   margin-bottom: 15px;
-  max-width: 38em;
+  max-width: 100%;
 }
 
 @media (min-width: 40.0625em) {
@@ -590,6 +590,8 @@ a:active {
 .block {
   background-color: var(--parliament-white);
   padding: 18px;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 @media (min-width: 40.0625em) {
@@ -700,8 +702,15 @@ a:active {
 
 .featured-module__chapters {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .featured-module__chapters {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
 }
 
 .featured-module__card,
@@ -1007,9 +1016,8 @@ a:active {
 .section-tree__id {
   flex-shrink: 0;
   font-family: monospace;
-  font-size: 0.875rem;
+  font-size: 14px;
   color: var(--govuk-secondary-text-colour);
-  min-width: 40px;
 }
 
 .section-tree__title {
@@ -1390,9 +1398,9 @@ a:active {
 }
 
 .section-page__content {
-  font-size: 1.1875rem;
+  font-size: 19px;
   line-height: 1.6;
-  max-width: 42em;
+  max-width: 100%;
 }
 
 .section-page__content p {
@@ -1643,12 +1651,15 @@ a:active {
 
 .module-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
-@media (max-width: 40.0525em) {
-  .module-grid { grid-template-columns: 1fr; }
+@media (min-width: 40.0625em) {
+  .module-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
 }
 
 /* ===================================
