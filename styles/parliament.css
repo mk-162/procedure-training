@@ -104,6 +104,11 @@
 /* Reset */
 *, *::before, *::after { box-sizing: border-box; }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 /* Template */
 .govuk-template {
   background-color: var(--govuk-template-background-colour, #f8f7f7);
@@ -510,8 +515,16 @@ a:active {
 
 .parliament-header__nav {
   display: flex;
-  gap: var(--pugin-space-xl);
+  gap: 15px;
   list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 40.0625em) {
+  .parliament-header__nav {
+    gap: var(--pugin-space-xl);
+  }
 }
 
 .parliament-header__nav a,
@@ -881,8 +894,9 @@ a:active {
 
 .chapter-header__module {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 15px;
+  gap: 10px 15px;
   margin-bottom: 30px;
 }
 
@@ -893,7 +907,8 @@ a:active {
 
 .chapter-header__stats {
   display: flex;
-  gap: 30px;
+  flex-wrap: wrap;
+  gap: 15px 30px;
   padding: 20px 0;
   border-top: 1px solid var(--govuk-border-colour);
   border-bottom: 1px solid var(--govuk-border-colour);
@@ -923,8 +938,9 @@ a:active {
   padding: 30px 0;
   margin-bottom: 30px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 15px 20px;
 }
 
 .chapter-cta__hint {
@@ -960,7 +976,13 @@ a:active {
 
 .section-tree .section-tree {
   border-left: 2px solid var(--govuk-border-colour);
-  margin-left: 30px;
+  margin-left: 15px;
+}
+
+@media (min-width: 40.0625em) {
+  .section-tree .section-tree {
+    margin-left: 30px;
+  }
 }
 
 .section-tree__item {
@@ -969,11 +991,13 @@ a:active {
 
 .section-tree__row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 15px;
+  gap: 8px 15px;
   padding: 10px 15px;
   border-bottom: 1px solid var(--govuk-border-colour);
-  font-size: 1rem;
+  font-size: 19px;
+  min-width: 0;
 }
 
 .section-tree__row:hover {
@@ -1648,6 +1672,8 @@ a:active {
   max-width: 960px;
   margin-right: 15px;
   margin-left: 15px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 @media (min-width: 40.0625em) {
