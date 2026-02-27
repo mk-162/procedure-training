@@ -20,7 +20,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <main className="page-content page-content--grey">
+      <main id="main-content" className="page-content page-content--grey">
         <div className="container">
 
           {/* Recommended programme */}

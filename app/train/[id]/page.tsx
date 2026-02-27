@@ -61,7 +61,7 @@ export default async function TrainPage({
       </nav>
     </div>
 
-    <main className="page-content page-content--grey">
+    <main id="main-content" className="page-content page-content--grey">
       <div className="container">
         <div className="split-layout">
           {/* Left: interactive scenario */}

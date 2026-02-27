@@ -144,7 +144,7 @@ export default async function ChapterPage({
       </nav>
     </div>
 
-    <main className="page-content page-content--grey">
+    <main id="main-content" className="page-content page-content--grey">
       <div className="container">
         {/* Chapter header */}
         <div className="block block--accent">
@@ -158,7 +158,7 @@ export default async function ChapterPage({
 
           {meta.moduleTitle && (
             <div className="chapter-header__module">
-              <span className="tag tag--blue">{meta.moduleTitle}</span>
+              <strong className="govuk-tag tag--blue">{meta.moduleTitle}</strong>
               {meta.moduleDescription && (
                 <span className="chapter-header__module-desc">
                   {meta.moduleDescription}
