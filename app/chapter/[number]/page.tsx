@@ -19,8 +19,8 @@ export async function generateMetadata({
   const meta = getChapter(Number(number));
   if (!meta) return { title: "Not Found" };
   return {
-    title: `Chapter ${meta.number}: ${meta.title} — Erskine May Procedural Training`,
-    description: `Training exercises for Chapter ${meta.number}: ${meta.title}. ${meta.sectionCount} sections.`,
+    title: `Chapter ${meta.number}: ${meta.title} — Erskine May procedural training`,
+    description: `Training exercises for chapter ${meta.number}: ${meta.title}. ${meta.sectionCount} sections.`,
   };
 }
 
@@ -123,7 +123,7 @@ export default async function ChapterPage({
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <ol className="breadcrumbs__list">
             <li>
-              <Link href="/">Chapter Index</Link>
+              <Link href="/">Chapter index</Link>
             </li>
             {part && (
               <li>
@@ -174,14 +174,14 @@ export default async function ChapterPage({
           </div>
         </div>
 
-        {/* Training CTA */}
+        {/* Training call to action */}
         {meta.status === "available" && scenariosAvailable.length > 0 ? (
           <div className="chapter-cta">
             <Link
               href={`/train/${scenariosAvailable[0].id}`}
               className="btn btn--primary btn--lg"
             >
-              Begin Exercises
+              Start exercises
             </Link>
             <span className="chapter-cta__hint">
               Exercise 1: {scenariosAvailable[0].title}
@@ -190,19 +190,19 @@ export default async function ChapterPage({
         ) : (
           <div className="chapter-cta">
             <div className="update-alert">
-              <strong>In preparation</strong> — Training exercises for this
-              chapter are currently being developed. The section index below
-              reflects the current live text of Erskine May.
+              <strong>In preparation</strong> — We are developing training
+              exercises for this chapter. The section index below shows the
+              current live text of Erskine May.
             </div>
           </div>
         )}
 
         {/* Section tree */}
         <div className="chapter-sections">
-          <h2>Section Index</h2>
+          <h2>Section index</h2>
           <p>
-            As published in the current digital edition of Erskine May.
-            Sections with available training exercises are indicated.
+            From the current digital edition of Erskine May. Sections with
+            training exercises are marked.
           </p>
           {apiData ? (
             <SectionTree
@@ -211,8 +211,8 @@ export default async function ChapterPage({
             />
           ) : (
             <div className="update-alert">
-              <strong>Source unavailable</strong> — The Erskine May API is
-              currently unavailable. Consult the Table Office for the
+              <strong>Source unavailable</strong> — We cannot reach the Erskine
+              May API at the moment. Consult the Table Office for the
               authoritative text.
             </div>
           )}

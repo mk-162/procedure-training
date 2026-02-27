@@ -18,7 +18,7 @@ export async function generateMetadata({
   const scenario = getScenarioById(id);
   if (!scenario) return { title: "Not Found" };
   return {
-    title: `${scenario.title} — Erskine May Training`,
+    title: `${scenario.title} — Erskine May training`,
     description: scenario.context.slice(0, 160),
   };
 }
@@ -47,28 +47,28 @@ export default async function TrainPage({
         {/* Breadcrumbs */}
         <nav className="breadcrumbs" aria-label="Breadcrumb">
           <ol className="breadcrumbs__list">
-            <li><Link href="/">Chapter Index</Link></li>
+            <li><Link href="/">Chapter index</Link></li>
             <li><Link href="/chapter/21">Chapter 21</Link></li>
             <li aria-current="page">{scenario.title}</li>
           </ol>
         </nav>
 
         <div className="split-layout">
-          {/* Left: Interactive Scenario */}
+          {/* Left: interactive scenario */}
           <div className="split-layout__primary">
             <ScenarioCard scenario={scenario} />
           </div>
 
-          {/* Right: Erskine May Source Text */}
+          {/* Right: Erskine May source text */}
           <div className="split-layout__secondary">
-            <h3 style={{ marginBottom: "var(--space-4)" }}>Source Authority</h3>
+            <h3 className="source-authority__heading">Source authority</h3>
 
             {sectionData ? (
               <>
                 {sectionData.isUpdated && (
                   <div className="update-alert">
-                    <strong>⚠ Updated</strong> — This section has been modified
-                    since the 2019 print edition.
+                    <strong>Updated</strong> — This section has changed since
+                    the 2019 print edition.
                     {sectionData.updatedDate && (
                       <>
                         {" "}Last updated:{" "}
@@ -89,7 +89,7 @@ export default async function TrainPage({
                   paragraphRef={scenario.paragraphRef}
                 />
 
-                <div style={{ marginTop: "var(--space-6)", fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
+                <div className="source-authority__meta">
                   <p>
                     Chapter {sectionData.chapterNumber}: {sectionData.chapterTitle}
                   </p>
@@ -100,8 +100,9 @@ export default async function TrainPage({
               </>
             ) : (
               <div className="update-alert">
-                <strong>Source unavailable</strong> — Unable to reach the Erskine
-                May API. Consult the Table Office for authoritative guidance.
+                <strong>Source unavailable</strong> — We cannot reach the Erskine
+                May API at the moment. Consult the Table Office for authoritative
+                guidance.
               </div>
             )}
           </div>

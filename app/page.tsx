@@ -11,14 +11,14 @@ export default function HomePage() {
       {/* Banner */}
       <div className="parliament-banner">
         <div className="container">
-          <h1>Procedural Training</h1>
+          <h1>Procedural training</h1>
           <p className="lead">
-            An authorised training resource for the practice and procedure of
-            the House of Commons, drawing on the 25th edition of Erskine May.
+            A training resource for House of Commons practice and procedure,
+            based on the 25th edition of Erskine May.
           </p>
           <p className="lead">
             {TOTAL_CHAPTERS} chapters · {TOTAL_SECTIONS} sections ·
-            Synchronised with the live digital edition
+            synchronised with the live digital edition
           </p>
         </div>
       </div>
@@ -28,15 +28,15 @@ export default function HomePage() {
 
           {/* Recommended programme */}
           <section className="featured-module">
-            <div className="featured-module__eyebrow">Recommended Programme</div>
+            <div className="featured-module__eyebrow">Recommended programme</div>
             <h2 className="featured-module__title">
               Procedure in the House of Commons
             </h2>
             <p className="featured-module__body">
-              This programme covers the core procedural requirements for staff
-              supporting Members in the Chamber, from the ordering of business
-              through to the maintenance of order and the tabling of Questions.
-              Chapters 17–22 of Erskine May.
+              This programme covers the core procedural knowledge you need to
+              support Members in the Chamber. It takes you from the ordering of
+              business through to the maintenance of order and the tabling of
+              Questions. Based on chapters 17 to 22 of Erskine May.
             </p>
             <div className="featured-module__chapters">
               {PARTS[2].chapters
@@ -66,13 +66,13 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Full chapter index by Part */}
+          {/* Full chapter index by part */}
           <section className="chapter-index">
-            <h2>Complete Chapter Index</h2>
+            <h2>Complete chapter index</h2>
             <p>
               Erskine May is organised into {PARTS.length} parts. Select a
-              chapter to view its contents and, where available, to undertake
-              the associated training exercises.
+              chapter to view its sections and start training exercises where
+              they are available.
             </p>
 
             {PARTS.map((part) => (
@@ -94,12 +94,9 @@ export default function HomePage() {
                         <div className="chapter-list__meta">
                           {ch.sectionCount} sections ·{" "}
                           {ch.sprintCount} exercises ·{" "}
-                          approximately {ch.sprintCount * 3} minutes
+                          about {ch.sprintCount * 3} minutes
                           {ch.status === "available" && (
-                            <span
-                              className="tag tag--green"
-                              style={{ marginLeft: "var(--space-2)" }}
-                            >
+                            <span className="tag tag--green chapter-list__tag">
                               Available
                             </span>
                           )}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ParliamentHeader } from "@/components/ParliamentHeader";
+
+/* Parliamentary Design System (includes GOV.UK Frontend tokens) */
 import "@/styles/parliament.css";
 
 export const metadata: Metadata = {
@@ -14,10 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="govuk-template">
+      <body className="govuk-template__body">
+        <a href="#main-content" className="govuk-skip-link" data-module="govuk-skip-link">
+          Skip to main content
+        </a>
         <ParliamentHeader />
-        {children}
+        <div id="main-content">
+          {children}
+        </div>
       </body>
     </html>
   );
