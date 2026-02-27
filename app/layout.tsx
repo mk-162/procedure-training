@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="govuk-template">
-      <body className="govuk-template__body js-enabled">
+      <body className="govuk-template__body js-enabled" suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `document.body.className += ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');`,
