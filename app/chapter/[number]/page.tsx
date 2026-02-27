@@ -20,64 +20,41 @@ export async function generateMetadata({
   if (!meta) return { title: "Not Found" };
   return {
     title: `Chapter ${meta.number}: ${meta.title} — Erskine May procedural training`,
-    description: `Training exercises for chapter ${meta.number}: ${meta.title}. Scenario-based learning for House of Commons procedure.`,
+    description: `Training exercises for chapter ${meta.number}: ${meta.title}.`,
   };
 }
 
-function SectionTree({
+function SectionList({
   sections,
   chapterNumber,
+  depth = 0,
 }: {
   sections: ChapterSection[];
+  chapterNumber: number;
   depth?: number;
-  chapterNumber: number;
 }) {
   return (
-    <ul className="section-tree section-tree--root">
-      {sections.map((section) => (
-        <SectionNode
-          key={section.id}
-          section={section}
-          chapterNumber={chapterNumber}
-        />
-      ))}
+    <ul className={`govuk-list ${depth === 0 ? "govuk-!-margin-top-4" : "govuk-!-margin-left-4"}`}>
+      {sections.map((section) => {
+        const scenarios = DEMO_SCENARIOS.filter((s) => s.sectionId === section.id);
+        return (
+          <li key={section.id} className="govuk-!-margin-bottom-2">
+            <Link href={`/section/${section.id}`} className="govuk-link">
+              {section.title}
+            </Link>
+            {scenarios.length > 0 && (
+              <>
+                {" "}
+                <strong className="govuk-tag govuk-tag--green">{scenarios.length} exercise{scenarios.length > 1 ? "s" : ""}</strong>
+              </>
+            )}
+            {section.subSections.length > 0 && (
+              <SectionList sections={section.subSections} chapterNumber={chapterNumber} depth={depth + 1} />
+            )}
+          </li>
+        );
+      })}
     </ul>
-  );
-}
-
-function SectionNode({
-  section,
-  chapterNumber,
-}: {
-  section: ChapterSection;
-  chapterNumber: number;
-}) {
-  const scenarios = DEMO_SCENARIOS.filter((s) => s.sectionId === section.id);
-  return (
-    <li className="section-tree__item">
-      <div className="section-tree__row">
-        <span className="section-tree__id">{section.id}</span>
-        <Link href={`/section/${section.id}`} className="section-tree__title-link">
-          {section.title}
-        </Link>
-        {scenarios.length > 0 && (
-          <Link href={`/train/${scenarios[0].id}`} className="tag tag--green">
-            {scenarios.length} exercise{scenarios.length > 1 ? "s" : ""}
-          </Link>
-        )}
-      </div>
-      {section.subSections.length > 0 && (
-        <ul className="section-tree">
-          {section.subSections.map((sub) => (
-            <SectionNode
-              key={sub.id}
-              section={sub}
-              chapterNumber={chapterNumber}
-            />
-          ))}
-        </ul>
-      )}
-    </li>
   );
 }
 
@@ -108,9 +85,7 @@ export default async function ChapterPage({
     return count;
   }
 
-  const totalSections = apiData
-    ? countSections(apiData.sections)
-    : meta.sectionCount;
+  const totalSections = apiData ? countSections(apiData.sections) : meta.sectionCount;
 
   const scenariosAvailable = DEMO_SCENARIOS.filter((s) => {
     if (!apiData) return false;
@@ -119,121 +94,78 @@ export default async function ChapterPage({
   });
 
   return (
-    <>
-    {/* Page title banner */}
-    <div className="parliament-banner">
-      <div className="container">
-        <h1>{apiData?.title || meta.title}</h1>
-      </div>
-    </div>
-
-    {/* Breadcrumbs */}
-    <div className="container">
-      <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <ol className="breadcrumbs__list">
-          <li>
-            <Link href="/">Chapter index</Link>
+    <div className="govuk-width-container">
+      <div className="govuk-breadcrumbs">
+        <ol className="govuk-breadcrumbs__list">
+          <li className="govuk-breadcrumbs__list-item">
+            <Link className="govuk-breadcrumbs__link" href="/">Home</Link>
+          </li>
+          <li className="govuk-breadcrumbs__list-item">
+            <Link className="govuk-breadcrumbs__link" href="/library">Chapter index</Link>
           </li>
           {part && (
-            <li>
-              Part {part.number}: {part.title}
-            </li>
+            <li className="govuk-breadcrumbs__list-item">Part {part.number}</li>
           )}
-          <li aria-current="page">Chapter {chapterNumber}</li>
+          <li className="govuk-breadcrumbs__list-item" aria-current="page">Chapter {chapterNumber}</li>
         </ol>
-      </nav>
-    </div>
+      </div>
 
-    <main id="main-content" className="page-content page-content--grey">
-      <div className="container">
-        {/* Chapter header */}
-        <div className="block block--accent">
-        <div className="chapter-header">
-          <div className="chapter-header__number">
-            Chapter {chapterNumber}
-          </div>
+      <main className="govuk-main-wrapper" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <span className="govuk-caption-xl">Chapter {chapterNumber}</span>
+            <h1 className="govuk-heading-xl">{apiData?.title || meta.title}</h1>
 
-          {meta.moduleTitle && (
-            <div className="chapter-header__module">
-              <strong className="govuk-tag tag--blue">{meta.moduleTitle}</strong>
-              {meta.moduleDescription && (
-                <span className="chapter-header__module-desc">
-                  {meta.moduleDescription}
-                </span>
-              )}
-            </div>
-          )}
+            <dl className="govuk-summary-list govuk-summary-list--no-border">
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">Sections</dt>
+                <dd className="govuk-summary-list__value">{totalSections}</dd>
+              </div>
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">Exercises</dt>
+                <dd className="govuk-summary-list__value">{meta.sprintCount}</dd>
+              </div>
+              <div className="govuk-summary-list__row">
+                <dt className="govuk-summary-list__key">Estimated time</dt>
+                <dd className="govuk-summary-list__value">About {meta.sprintCount * 3} minutes</dd>
+              </div>
+            </dl>
 
-          <div className="chapter-header__stats">
-            <div className="stat">
-              <div className="stat__value">{totalSections}</div>
-              <div className="stat__label">Sections</div>
-            </div>
-            <div className="stat">
-              <div className="stat__value">{meta.sprintCount}</div>
-              <div className="stat__label">Exercises</div>
-            </div>
-            <div className="stat">
-              <div className="stat__value">~{meta.sprintCount * 3}</div>
-              <div className="stat__label">Minutes</div>
-            </div>
-            <div className="stat">
-              <div className="stat__value">{scenariosAvailable.length}</div>
-              <div className="stat__label">Scenarios</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Training call to action */}
-        {meta.status === "available" && scenariosAvailable.length > 0 ? (
-          <div className="chapter-cta">
-            <Link
-              href={`/train/${scenariosAvailable[0].id}`}
-              className="btn btn--primary btn--lg"
-            >
-              Start exercises
-            </Link>
-            <span className="chapter-cta__hint">
-              Exercise 1: {scenariosAvailable[0].title}
-            </span>
-          </div>
-        ) : (
-          <div className="chapter-cta">
-            <div className="update-alert">
-              <strong>In preparation</strong> — We are developing training
-              exercises for this chapter. The section index below shows the
-              current live text of Erskine May.
-            </div>
-          </div>
-        )}
-
-        </div>{/* end block--accent */}
-
-        {/* Section tree */}
-        <div className="block block--spaced">
-          <div className="chapter-sections">
-            <h2>Section index</h2>
-            <p>
-              From the current digital edition of Erskine May. Sections with
-              training exercises are marked.
-            </p>
-            {apiData ? (
-              <SectionTree
-                sections={apiData.sections}
-                chapterNumber={chapterNumber}
-              />
+            {meta.status === "available" && scenariosAvailable.length > 0 ? (
+              <Link href={`/train/${scenariosAvailable[0].id}`} role="button" draggable="false" className="govuk-button govuk-button--start" data-module="govuk-button">
+                Start exercises
+                <svg className="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                </svg>
+              </Link>
             ) : (
-              <div className="update-alert">
-                <strong>Source unavailable</strong> — We cannot reach the Erskine
-                May API at the moment. Consult the Table Office for the
-                authoritative text.
+              <div className="govuk-warning-text">
+                <span className="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong className="govuk-warning-text__text">
+                  <span className="govuk-visually-hidden">Warning</span>
+                  We are developing training exercises for this chapter. The section index below shows the current text of Erskine May.
+                </strong>
+              </div>
+            )}
+
+            <hr className="govuk-section-break govuk-section-break--l govuk-section-break--visible" />
+
+            <h2 className="govuk-heading-l">Section index</h2>
+            <p className="govuk-body">
+              From the current digital edition of Erskine May. Sections with training exercises are marked.
+            </p>
+
+            {apiData ? (
+              <SectionList sections={apiData.sections} chapterNumber={chapterNumber} />
+            ) : (
+              <div className="govuk-inset-text">
+                We cannot reach the Erskine May API at the moment. Consult the Table Office for the authoritative text.
               </div>
             )}
           </div>
         </div>
-      </div>
-    </main>
-    </>
+      </main>
+    </div>
   );
 }
 

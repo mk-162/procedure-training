@@ -1,36 +1,23 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Cookie policy — Erskine May procedural training",
+  title: "Cookies — Erskine May procedural training",
 };
 
 export default function CookiesPage() {
   return (
-    <>
-      <div className="parliament-banner">
-        <div className="container">
-          <h1>Cookie policy</h1>
-        </div>
-      </div>
-      <div className="container">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <ol className="breadcrumbs__list">
-            <li><Link href="/">Home</Link></li>
-            <li aria-current="page">Cookie policy</li>
-          </ol>
-        </nav>
-      </div>
-      <main id="main-content" className="page-content page-content--grey">
-        <div className="container">
-          <div className="block block--accent">
-            <h2>How we use cookies</h2>
-            <p>
-              This service does not use cookies to track you or collect personal
-              data. It uses essential cookies only to make the service work.
+    <div className="govuk-width-container">
+      <Link href="/" className="govuk-back-link">Back to home</Link>
+      <main className="govuk-main-wrapper" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <h1 className="govuk-heading-xl">Cookies</h1>
+            <p className="govuk-body">
+              This service uses only essential cookies required for the application to function. We do not use analytics or tracking cookies.
             </p>
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

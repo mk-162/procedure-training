@@ -32,93 +32,61 @@ export default async function TrainPage({
   const scenario = getScenarioById(id);
   if (!scenario) return notFound();
 
-  // Fetch the live Erskine May source text
   let sectionData;
   try {
     sectionData = await fetchSection(scenario.sectionId);
   } catch {
-    // API unavailable — show scenario without source
     sectionData = null;
   }
 
   return (
-    <>
-    {/* Page title banner */}
-    <div className="parliament-banner">
-      <div className="container">
-        <h1>{scenario.title}</h1>
-      </div>
-    </div>
-
-    {/* Breadcrumbs */}
-    <div className="container">
-      <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <ol className="breadcrumbs__list">
-          <li><Link href="/">Chapter index</Link></li>
-          <li><Link href="/chapter/21">Chapter 21</Link></li>
-          <li aria-current="page">{scenario.title}</li>
+    <div className="govuk-width-container">
+      <div className="govuk-breadcrumbs">
+        <ol className="govuk-breadcrumbs__list">
+          <li className="govuk-breadcrumbs__list-item">
+            <Link className="govuk-breadcrumbs__link" href="/">Home</Link>
+          </li>
+          <li className="govuk-breadcrumbs__list-item">
+            <Link className="govuk-breadcrumbs__link" href="/library">Chapter index</Link>
+          </li>
+          <li className="govuk-breadcrumbs__list-item">
+            <Link className="govuk-breadcrumbs__link" href={`/chapter/${sectionData?.chapterNumber || 21}`}>
+              Chapter {sectionData?.chapterNumber || 21}
+            </Link>
+          </li>
+          <li className="govuk-breadcrumbs__list-item" aria-current="page">{scenario.title}</li>
         </ol>
-      </nav>
-    </div>
+      </div>
 
-    <main id="main-content" className="page-content page-content--grey">
-      <div className="container">
-        <div className="split-layout">
-          {/* Left: interactive scenario */}
-          <div className="split-layout__primary block">
+      <main className="govuk-main-wrapper" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <span className="govuk-caption-xl">Procedural exercise</span>
             <ScenarioCard scenario={scenario} />
           </div>
-
-          {/* Right: Erskine May source text */}
-          <div className="split-layout__secondary block">
-            <h3 className="source-authority__heading">Source authority</h3>
+          <div className="govuk-grid-column-one-third">
+            <h3 className="govuk-heading-s">Source authority</h3>
 
             {sectionData ? (
               <>
-                {sectionData.isUpdated && (
-                  <div className="update-alert">
-                    <strong>Updated</strong> — This section has changed since
-                    the 2019 print edition.
-                    {sectionData.updatedDate && (
-                      <>
-                        {" "}Last updated:{" "}
-                        {new Date(sectionData.updatedDate).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </>
-                    )}
-                  </div>
-                )}
-
                 <AuthorityPanel
                   title={sectionData.title}
                   contentHtml={sectionData.contentHtml}
                   sectionId={sectionData.id}
                   paragraphRef={scenario.paragraphRef}
                 />
-
-                <div className="source-authority__meta">
-                  <p>
-                    Chapter {sectionData.chapterNumber}: {sectionData.chapterTitle}
-                  </p>
-                  {sectionData.titleChain && (
-                    <p>Section: {sectionData.titleChain}</p>
-                  )}
-                </div>
+                <p className="govuk-body-s govuk-!-margin-top-4">
+                  Chapter {sectionData.chapterNumber}: {sectionData.chapterTitle}
+                </p>
               </>
             ) : (
-              <div className="update-alert">
-                <strong>Source unavailable</strong> — We cannot reach the Erskine
-                May API at the moment. Consult the Table Office for authoritative
-                guidance.
+              <div className="govuk-inset-text">
+                We cannot reach the Erskine May API at the moment. Consult the Table Office for authoritative guidance.
               </div>
             )}
           </div>
         </div>
-      </div>
-    </main>
-    </>
+      </main>
+    </div>
   );
 }

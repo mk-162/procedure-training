@@ -5,187 +5,134 @@ import { useRouter } from "next/navigation";
 import { PROGRAMMES } from "@/lib/programmes";
 import { getScenarioById } from "@/lib/scenarios";
 import { useProgress } from "@/lib/progress";
-import { StepIndicator } from "@/components/StepIndicator";
 import { useState } from "react";
 import type { getModuleById } from "@/lib/modules";
 
 export function ModuleTestClient({ module }: { module: NonNullable<ReturnType<typeof getModuleById>> }) {
   const { isLoaded } = useProgress();
-  const router = useRouter();
 
   if (!isLoaded) {
     return null;
   }
 
   const programme = PROGRAMMES.find((p) => p.moduleIds.includes(module.id));
-  const steps = [
-    { id: "learn", label: "Learn", href: `/module/${module.id}/learn` },
-    { id: "practice", label: "Practice", href: `/module/${module.id}/practice` },
-    { id: "test", label: "Test", href: `/module/${module.id}/test` },
-    { id: "summary", label: "Summary", href: `/module/${module.id}/summary` },
-  ];
-
   const scenarioId = module.scenarioIds[0];
   const scenario = scenarioId ? getScenarioById(scenarioId) : null;
 
   return (
-    <>
-      <div className="parliament-banner">
-        <div className="container">
-          <Link
-            href={programme ? `/programme/${programme.slug}` : "/"}
-            className="back-link"
-          >
-            ← Back to {programme?.title || "programme"}
-          </Link>
-          <h1>{module.title}</h1>
-          <p className="lead">
-            Chapter {module.chapterNumber} · {module.timeEstimate} minutes
-          </p>
-        </div>
-      </div>
+    <div className="govuk-width-container">
+      <Link href={programme ? `/programme/${programme.slug}` : "/"} className="govuk-back-link">
+        Back to {programme?.title || "programme"}
+      </Link>
 
-      <main id="main-content" className="page-content page-content--grey">
-        <div className="container">
-          <StepIndicator steps={steps} currentStep="test" />
+      <main className="govuk-main-wrapper" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <span className="govuk-caption-xl">Chapter {module.chapterNumber} · Test</span>
+            <h1 className="govuk-heading-xl">{module.title}</h1>
 
-          {scenario ? (
-            <TestCard
-              moduleId={module.id}
-              scenario={scenario}
-              moduleTitle={module.title}
-            />
-          ) : (
-            <section className="block block--spaced">
-              <p>No test scenarios available for this module yet.</p>
-              <div className="action-bar">
-                <Link
-                  href={`/module/${module.id}/summary`}
-                  className="btn btn--primary"
-                >
+            {scenario ? (
+              <TestExercise moduleId={module.id} scenario={scenario} />
+            ) : (
+              <>
+                <p className="govuk-body">No test scenarios available for this module yet.</p>
+                <Link href={`/module/${module.id}/summary`} role="button" draggable="false" className="govuk-button" data-module="govuk-button">
                   Continue without test
                 </Link>
-              </div>
-            </section>
-          )}
+              </>
+            )}
+          </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
 
-function TestCard({
+function TestExercise({
   moduleId,
   scenario,
-  moduleTitle,
 }: {
   moduleId: string;
   scenario: NonNullable<ReturnType<typeof getScenarioById>>;
-  moduleTitle: string;
 }) {
   const router = useRouter();
   const { completeModule, startModule } = useProgress();
-
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState<number | null>(null);
 
   const selectedChoice = scenario.choices.find((c) => c.id === selectedId);
 
-  const handleSelect = (choiceId: string) => {
-    if (revealed) return;
-    setSelectedId(choiceId);
-  };
-
   const handleSubmit = () => {
     if (!selectedId) return;
     setRevealed(true);
-
     const isCorrect = selectedChoice?.isCorrect ?? false;
     const scoreValue = isCorrect ? 100 : 0;
     setScore(scoreValue);
-
     if (isCorrect) {
       startModule(moduleId);
       completeModule(moduleId, scoreValue);
     }
   };
 
-  const handleViewSummary = () => {
-    router.push(`/module/${moduleId}/summary?score=${score}`);
-  };
-
   return (
     <>
-      <section className="block block--spaced">
-        <h2>Test</h2>
-        <p>
-          Answer this question to complete the module. You will receive a score
-          and cannot retry once submitted.
-        </p>
-      </section>
+      <h2 className="govuk-heading-l">{scenario.title}</h2>
+      <p className="govuk-body-l">{scenario.context}</p>
 
-      <div className="scenario-card">
-        <div className="scenario-card__eyebrow">Test</div>
-        <h2 className="scenario-card__title">{scenario.title}</h2>
-        <p className="scenario-card__context">{scenario.context}</p>
-        <p className="scenario-card__question">{scenario.question}</p>
-
-        <div className="choices" role="radiogroup" aria-label="Answer choices">
-          {scenario.choices.map((choice) => {
-            let stateClass = "";
-            if (revealed && choice.id === selectedId) {
-              stateClass = choice.isCorrect ? "choice-btn--correct" : "choice-btn--incorrect";
-            } else if (revealed && choice.isCorrect) {
-              stateClass = "choice-btn--correct";
-            } else if (choice.id === selectedId) {
-              stateClass = "choice-btn--selected";
-            }
-
-            return (
-              <button
-                key={choice.id}
-                className={`choice-btn ${stateClass}`}
-                onClick={() => handleSelect(choice.id)}
-                role="radio"
-                aria-checked={choice.id === selectedId}
-                disabled={revealed}
-              >
-                <span className="choice-btn__letter">{choice.id.toUpperCase()}</span>
-                <span>{choice.text}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {!revealed && selectedId && (
-          <div style={{ marginTop: "20px" }}>
-            <button className="btn btn--primary" onClick={handleSubmit}>
-              Submit answer
-            </button>
-          </div>
-        )}
-
-        {revealed && selectedChoice && (
-          <>
-            <div className={`feedback-panel ${selectedChoice.isCorrect ? "" : "feedback-panel--incorrect"}`}>
-              <div className="feedback-panel__label">
-                {selectedChoice.isCorrect ? "Correct" : "Incorrect"}
+      <div className="govuk-form-group">
+        <fieldset className="govuk-fieldset">
+          <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h3 className="govuk-fieldset__heading">{scenario.question}</h3>
+          </legend>
+          <div className="govuk-radios" data-module="govuk-radios">
+            {scenario.choices.map((choice) => (
+              <div className="govuk-radios__item" key={choice.id}>
+                <input
+                  className="govuk-radios__input"
+                  id={`test-${choice.id}`}
+                  name="test-answer"
+                  type="radio"
+                  value={choice.id}
+                  checked={selectedId === choice.id}
+                  onChange={() => !revealed && setSelectedId(choice.id)}
+                  disabled={revealed}
+                />
+                <label className="govuk-label govuk-radios__label" htmlFor={`test-${choice.id}`}>
+                  {choice.text}
+                </label>
               </div>
-              <p>{selectedChoice.feedback}</p>
-              <p style={{ marginTop: "15px", fontSize: "14px", color: "#717171" }}>
-                Source: Erskine May, ¶{scenario.paragraphRef}
-              </p>
-            </div>
-
-            <div style={{ marginTop: "20px" }}>
-              <button className="btn btn--primary" onClick={handleViewSummary}>
-                View results
-              </button>
-            </div>
-          </>
-        )}
+            ))}
+          </div>
+        </fieldset>
       </div>
+
+      {!revealed && selectedId && (
+        <button className="govuk-button" data-module="govuk-button" onClick={handleSubmit}>
+          Submit answer
+        </button>
+      )}
+
+      {revealed && selectedChoice && (
+        <>
+          <div className={`govuk-notification-banner ${selectedChoice.isCorrect ? "govuk-notification-banner--success" : ""}`} role="alert" aria-labelledby="test-feedback-title" data-module="govuk-notification-banner">
+            <div className="govuk-notification-banner__header">
+              <h2 className="govuk-notification-banner__title" id="test-feedback-title">
+                {selectedChoice.isCorrect ? "Correct" : "Incorrect"}
+              </h2>
+            </div>
+            <div className="govuk-notification-banner__content">
+              <p className="govuk-body">{selectedChoice.feedback}</p>
+            </div>
+          </div>
+          <div className="govuk-inset-text">
+            Source: Erskine May, ¶{scenario.paragraphRef}
+          </div>
+          <button className="govuk-button" data-module="govuk-button" onClick={() => router.push(`/module/${moduleId}/summary?score=${score}`)}>
+            View results
+          </button>
+        </>
+      )}
     </>
   );
 }

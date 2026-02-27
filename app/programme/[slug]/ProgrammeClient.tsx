@@ -16,11 +16,15 @@ export function ProgrammeClient({
 
   if (!isLoaded) {
     return (
-      <div className="parliament-banner">
-        <div className="govuk-width-container">
-          <h1 className="govuk-heading-xl">{programme.title}</h1>
-          <p className="govuk-body-l">Loading...</p>
-        </div>
+      <div className="govuk-width-container">
+        <main className="govuk-main-wrapper" id="main-content">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h1 className="govuk-heading-xl">{programme.title}</h1>
+              <p className="govuk-body-l">Loading...</p>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -29,121 +33,82 @@ export function ProgrammeClient({
   const nextModule = getNextModule(programme.moduleIds);
   const isComplete = progProgress.completed === progProgress.total && progProgress.total > 0;
 
-  function getStatusIcon(status: string) {
-    switch (status) {
-      case "completed":
-        return "✓";
-      case "in-progress":
-        return "○";
-      default:
-        return "○";
-    }
-  }
-
-  function getStatusClass(status: string) {
-    switch (status) {
-      case "completed":
-        return "module-card--completed";
-      case "in-progress":
-        return "module-card--in-progress";
-      default:
-        return "";
-    }
-  }
-
   return (
-    <>
-      <div className="parliament-banner">
-        <div className="govuk-width-container">
-          <Link href="/" className="govuk-back-link">
-            Back to dashboard
-          </Link>
-          <h1 className="govuk-heading-xl">{programme.title}</h1>
-          <p className="govuk-body-l">
-            {programme.moduleIds.length} modules · about {programme.estimatedMinutes} minutes
-          </p>
-        </div>
-      </div>
+    <div className="govuk-width-container">
+      <Link href="/" className="govuk-back-link">
+        Back to dashboard
+      </Link>
+      
+      <main className="govuk-main-wrapper govuk-!-padding-top-6" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            {/* Header */}
+            <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{programme.title}</h1>
+            <p className="govuk-body-l govuk-!-margin-bottom-6">
+              {programme.moduleIds.length} modules · about {programme.estimatedMinutes} minutes
+            </p>
 
-      <main id="main-content" className="govuk-main-wrapper">
-        <div className="govuk-width-container">
-          {/* Progress overview */}
-          <section className="block">
-            <div className="progress-overview">
-              <div className="progress-overview__info">
-                <h2 className="govuk-heading-m">Your progress</h2>
-                <p className="govuk-body">
-                  {progProgress.completed} of {progProgress.total} modules completed
-                  {progProgress.averageScore > 0 && ` · Average score: ${progProgress.averageScore}%`}
-                </p>
-              </div>
-              <div className="progress-overview__bar">
-                <div
-                  className="progress-bar"
-                  style={{
-                    "--progress": `${(progProgress.completed / progProgress.total) * 100}%`,
-                  } as React.CSSProperties}
-                >
-                  <div className="progress-bar__fill" />
-                </div>
-              </div>
-            </div>
+            {/* Progress overview */}
+            <section className="govuk-!-margin-bottom-6">
+              <h2 className="govuk-heading-m">Your progress</h2>
+              <p className="govuk-body">
+                {progProgress.completed} of {progProgress.total} modules completed
+                {progProgress.averageScore > 0 && ` · Average score: ${progProgress.averageScore}%`}
+              </p>
 
-            {!isComplete && nextModule && (
-              <div className="govuk-!-margin-top-4">
-                <Link href={`/module/${nextModule}/learn`} className="govuk-button govuk-button--start">
+              {!isComplete && nextModule && (
+                <Link href={`/module/${nextModule}/learn`} className="govuk-button govuk-button--start" data-module="govuk-button">
                   {progProgress.completed === 0 ? "Start programme" : "Start next module"}
+                  <svg className="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                    <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                  </svg>
                 </Link>
-              </div>
-            )}
+              )}
 
-            {isComplete && (
-              <div className="govuk-!-margin-top-4">
-                <strong className="govuk-tag govuk-tag--green">Programme completed</strong>
-              </div>
-            )}
-          </section>
+              {isComplete && (
+                <strong className="govuk-tag govuk-tag--green govuk-!-margin-top-4 govuk-!-display-inline-block">
+                  Programme completed
+                </strong>
+              )}
+            </section>
 
-          {/* Module list */}
-          <section className="block block--spaced">
-            <h2 className="govuk-heading-m">Modules</h2>
-            <div className="module-list">
-              {moduleList.map((module, index) => {
-                const progress = getModuleProgress(module.id);
-                return (
-                  <Link
-                    key={module.id}
-                    href={`/module/${module.id}/learn`}
-                    className={`module-card ${getStatusClass(progress.status)}`}
-                  >
-                    <div className="module-card__number">{index + 1}</div>
-                    <div className="module-card__status">
-                      <span
-                        className={`module-card__icon ${progress.status === "completed" ? "module-card__icon--completed" : ""}`}
-                      >
-                        {getStatusIcon(progress.status)}
-                      </span>
-                    </div>
-                    <div className="module-card__body">
-                      <h3 className="module-card__title">{module.title}</h3>
-                      <div className="module-card__meta">
-                        Chapter {module.chapterNumber} · {module.timeEstimate} minutes
+            {/* Module list using task list pattern */}
+            <section>
+              <h2 className="govuk-heading-m govuk-!-margin-bottom-4">Modules</h2>
+              <ul className="govuk-task-list">
+                {moduleList.map((module, index) => {
+                  const progress = getModuleProgress(module.id);
+                  const statusId = `module-${module.id}-status`;
+                  
+                  return (
+                    <li key={module.id} className="govuk-task-list__item govuk-task-list__item--with-link">
+                      <div className="govuk-task-list__name-and-hint">
+                        <Link className="govuk-link govuk-task-list__link" href={`/module/${module.id}/learn`} aria-describedby={statusId}>
+                          <span className="govuk-visually-hidden">Module {index + 1}: </span>{module.title}
+                        </Link>
+                        <div className="govuk-task-list__hint">
+                          Chapter {module.chapterNumber} · {module.timeEstimate} minutes
+                        </div>
+                      </div>
+                      <div className="govuk-task-list__status" id={statusId}>
                         {progress.status === "completed" && progress.score !== undefined && (
                           <strong className="govuk-tag govuk-tag--green">Score: {progress.score}%</strong>
                         )}
                         {progress.status === "in-progress" && (
                           <strong className="govuk-tag govuk-tag--blue">In progress</strong>
                         )}
+                        {progress.status === "not-started" && (
+                          <strong className="govuk-tag govuk-tag--grey">Not started</strong>
+                        )}
                       </div>
-                    </div>
-                    <div className="module-card__arrow">→</div>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

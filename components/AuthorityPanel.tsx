@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 interface AuthorityPanelProps {
   title: string;
   contentHtml: string;
@@ -15,45 +13,30 @@ export function AuthorityPanel({
   sectionId,
   paragraphRef,
 }: AuthorityPanelProps) {
-  const [open, setOpen] = useState(false);
+  const summaryText = paragraphRef 
+    ? `Source: Erskine May, ¶${paragraphRef} — ${title}`
+    : `Source: Erskine May — ${title}`;
 
   return (
-    <div className="authority-panel">
-      <button
-        className="authority-panel__trigger"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-controls={`authority-content-${sectionId}`}
-      >
-        <span>
-          📜 Source: Erskine May{paragraphRef ? `, ¶${paragraphRef}` : ""} — {title}
-        </span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path d="M8 11L3 6h10L8 11z" />
-        </svg>
-      </button>
-
-      {open && (
-        <div
-          id={`authority-content-${sectionId}`}
-          className="authority-panel__content"
-          role="region"
-          aria-label={`Erskine May source text: ${title}`}
-        >
-          <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
-          <div className="authority-panel__source">
-            Erskine May, 25th Edition (Online) — Section {sectionId}
-            {" · "}
-            <a
-              href={`https://erskinemay.parliament.uk/section/${sectionId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on Parliament.uk ↗
-            </a>
-          </div>
-        </div>
-      )}
-    </div>
+    <details className="govuk-details" data-module="govuk-details">
+      <summary className="govuk-details__summary">
+        <span className="govuk-details__summary-text">{summaryText}</span>
+      </summary>
+      <div className="govuk-details__text">
+        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        <p className="govuk-body-s govuk-!-margin-top-4">
+          Erskine May, 25th Edition (Online) — Section {sectionId}
+          {" · "}
+          <a
+            href={`https://erskinemay.parliament.uk/section/${sectionId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="govuk-link"
+          >
+            View on Parliament.uk ↗
+          </a>
+        </p>
+      </div>
+    </details>
   );
 }

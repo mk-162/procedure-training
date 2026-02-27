@@ -9,11 +9,15 @@ export default function DashboardPage() {
 
   if (!isLoaded) {
     return (
-      <div className="parliament-banner">
-        <div className="container">
-          <h1>Erskine May</h1>
-          <p className="lead">Loading your training...</p>
-        </div>
+      <div className="govuk-width-container">
+        <main className="govuk-main-wrapper" id="main-content">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h1 className="govuk-heading-xl">Erskine May</h1>
+              <p className="govuk-body-l">Loading your training...</p>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -21,138 +25,121 @@ export default function DashboardPage() {
   const firstVisit = isFirstVisit();
 
   return (
-    <>
-      {/* Page title banner */}
-      <div className="parliament-banner">
-        <div className="container">
-          <h1>Erskine May</h1>
-          <p className="lead">Procedural training for Parliament</p>
-        </div>
-      </div>
+    <div className="govuk-width-container">
+      <main className="govuk-main-wrapper govuk-!-padding-top-6" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            {firstVisit ? (
+              /* Welcome state for first-time users */
+              <section className="govuk-!-margin-bottom-6">
+                <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Erskine May</h1>
+                <p className="govuk-body-l">
+                  Procedural training for Parliament
+                </p>
+                <div className="govuk-inset-text govuk-!-margin-top-6">
+                  <p className="govuk-body govuk-!-margin-bottom-4">
+                    This training platform helps you learn parliamentary procedure
+                    through interactive exercises based on Erskine May, the
+                    authoritative guide to parliamentary law and practice.
+                  </p>
+                  <p className="govuk-body govuk-!-margin-bottom-4">
+                    Work through structured programmes covering key areas of
+                    parliamentary procedure. Each programme guides you through
+                    learn, practice, and test stages to build your knowledge.
+                  </p>
+                  <Link href="/library" className="govuk-button govuk-button--start" data-module="govuk-button">
+                    Choose a programme
+                    <svg className="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+                      <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+                    </svg>
+                  </Link>
+                </div>
+              </section>
+            ) : (
+              /* Returning user state */
+              <section className="govuk-!-margin-bottom-6">
+                <h1 className="govuk-heading-xl govuk-!-margin-bottom-4">Continue where you left off</h1>
+                {PROGRAMMES.map((programme) => {
+                  const progProgress = getProgrammeProgress(programme.moduleIds);
+                  const nextModule = getNextModule(programme.moduleIds);
+                  const isComplete = progProgress.completed === progProgress.total && progProgress.total > 0;
 
-      <main id="main-content" className="page-content page-content--grey">
-        <div className="container">
-          {firstVisit ? (
-            /* Welcome state for first-time users */
-            <section className="block block--accent">
-              <h2>Welcome to Erskine May training</h2>
-              <p className="lead">
-                This training platform helps you learn parliamentary procedure
-                through interactive exercises based on Erskine May, the
-                authoritative guide to parliamentary law and practice.
-              </p>
-              <p>
-                Work through structured programmes covering key areas of
-                parliamentary procedure. Each programme guides you through
-                learn, practice, and test stages to build your knowledge.
-              </p>
-              <div style={{ marginTop: "var(--space-6)" }}>
-                <Link href="/library" className="btn btn--primary btn--large">
-                  Choose a programme
-                </Link>
-              </div>
-            </section>
-          ) : (
-            /* Returning user state */
-            <section className="block block--accent">
-              <h2>Continue where you left off</h2>
-              {PROGRAMMES.map((programme) => {
-                const progProgress = getProgrammeProgress(programme.moduleIds);
-                const nextModule = getNextModule(programme.moduleIds);
-                const isComplete = progProgress.completed === progProgress.total && progProgress.total > 0;
-
-                return (
-                  <div key={programme.slug}>
-                    <div className="progress-overview">
-                      <div className="progress-overview__info">
-                        <h3>{programme.title}</h3>
-                        <p>
+                  return (
+                    <div key={programme.slug} className="govuk-!-margin-bottom-6">
+                      <div className="govuk-form-group">
+                        <h2 className="govuk-heading-m">{programme.title}</h2>
+                        <p className="govuk-body">
                           {progProgress.completed} of {progProgress.total} modules completed
                           {progProgress.averageScore > 0 && ` · Average score: ${progProgress.averageScore}%`}
                         </p>
                       </div>
-                      <div className="progress-overview__bar">
-                        <div
-                          className="progress-bar"
-                          style={{
-                            "--progress": `${(progProgress.completed / progProgress.total) * 100}%`,
-                          } as React.CSSProperties}
-                        >
-                          <div className="progress-bar__fill" />
-                        </div>
-                      </div>
-                    </div>
-                    {!isComplete && nextModule && (
-                      <div style={{ marginTop: "var(--space-4)" }}>
+                      {!isComplete && nextModule && (
                         <Link
                           href={`/module/${nextModule}/learn`}
-                          className="btn btn--primary"
+                          className="govuk-button"
+                          data-module="govuk-button"
                         >
                           {progProgress.completed === 0 ? "Start programme" : "Continue next module"}
                         </Link>
-                      </div>
-                    )}
-                    {isComplete && (
-                      <div style={{ marginTop: "var(--space-4)" }}>
+                      )}
+                      {isComplete && (
                         <Link
                           href={`/programme/${programme.slug}`}
-                          className="btn btn--secondary"
+                          className="govuk-button govuk-button--secondary"
+                          data-module="govuk-button"
                         >
                           Review programme
                         </Link>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </section>
-          )}
-
-          {/* Programme cards */}
-          <section className="block block--spaced">
-            <h2>Available programmes</h2>
-            <div className="programme-grid">
-              {PROGRAMMES.map((programme) => {
-                const progProgress = getProgrammeProgress(programme.moduleIds);
-                const progressPercent = progProgress.total > 0
-                  ? Math.round((progProgress.completed / progProgress.total) * 100)
-                  : 0;
-
-                return (
-                  <Link
-                    key={programme.slug}
-                    href={`/programme/${programme.slug}`}
-                    className="programme-card"
-                  >
-                    <div className="programme-card__header">
-                      <h3 className="programme-card__title">{programme.title}</h3>
-                      <span className="programme-card__modules">
-                        {programme.moduleIds.length} modules · about {programme.estimatedMinutes} minutes
-                      </span>
+                      )}
                     </div>
-                    <p className="programme-card__description">
-                      {programme.description}
-                    </p>
-                    {progProgress.total > 0 && (
-                      <div className="programme-card__progress">
-                        <div
-                          className="progress-bar"
-                          style={{ "--progress": `${progressPercent}%` } as React.CSSProperties}
-                        >
-                          <div className="progress-bar__fill" />
+                  );
+                })}
+              </section>
+            )}
+
+            {/* Programme cards - using task list pattern */}
+            <section>
+              <h2 className="govuk-heading-l govuk-!-margin-bottom-4">Available programmes</h2>
+              <ul className="govuk-task-list">
+                {PROGRAMMES.map((programme) => {
+                  const progProgress = getProgrammeProgress(programme.moduleIds);
+                  const progressPercent = progProgress.total > 0
+                    ? Math.round((progProgress.completed / progProgress.total) * 100)
+                    : 0;
+
+                  return (
+                    <li key={programme.slug} className="govuk-task-list__item govuk-task-list__item--with-link">
+                      <div className="govuk-task-list__name-and-hint">
+                        <Link className="govuk-link govuk-task-list__link" href={`/programme/${programme.slug}`}>
+                          {programme.title}
+                        </Link>
+                        <div className="govuk-task-list__hint">
+                          {programme.moduleIds.length} modules · about {programme.estimatedMinutes} minutes
                         </div>
-                        <span className="programme-card__progress-text">
-                          {progProgress.completed}/{progProgress.total} completed
-                        </span>
+                        <div className="govuk-body-s govuk-!-margin-top-2">
+                          {programme.description}
+                        </div>
                       </div>
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
+                      <div className="govuk-task-list__status">
+                        {progProgress.total > 0 ? (
+                          <>
+                            <strong className="govuk-tag govuk-tag--blue">{progressPercent}%</strong>
+                            <span className="govuk-body-s govuk-!-display-block govuk-!-margin-top-1">
+                              {progProgress.completed}/{progProgress.total}
+                            </span>
+                          </>
+                        ) : (
+                          <strong className="govuk-tag govuk-tag--grey">Not started</strong>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

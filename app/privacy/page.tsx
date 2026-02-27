@@ -1,37 +1,27 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy notice — Erskine May procedural training",
+  title: "Privacy — Erskine May procedural training",
 };
 
 export default function PrivacyPage() {
   return (
-    <>
-      <div className="parliament-banner">
-        <div className="container">
-          <h1>Privacy notice</h1>
-        </div>
-      </div>
-      <div className="container">
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <ol className="breadcrumbs__list">
-            <li><Link href="/">Home</Link></li>
-            <li aria-current="page">Privacy notice</li>
-          </ol>
-        </nav>
-      </div>
-      <main id="main-content" className="page-content page-content--grey">
-        <div className="container">
-          <div className="block block--accent">
-            <h2>Your privacy</h2>
-            <p>
-              This training application does not collect, store or process
-              personal data. No user accounts are required and no tracking is
-              used.
+    <div className="govuk-width-container">
+      <Link href="/" className="govuk-back-link">Back to home</Link>
+      <main className="govuk-main-wrapper" id="main-content">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <h1 className="govuk-heading-xl">Privacy</h1>
+            <p className="govuk-body">
+              This training application does not collect personal data. Your progress is stored locally in your browser using localStorage and is not transmitted to any server.
+            </p>
+            <h2 className="govuk-heading-m">Cookies</h2>
+            <p className="govuk-body">
+              This service uses only essential cookies required for the application to function.
             </p>
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
