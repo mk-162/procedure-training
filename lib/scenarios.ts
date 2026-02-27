@@ -38,14 +38,14 @@ export const DEMO_SCENARIOS: Scenario[] = [
         text: "Ask the Serjeant at Arms to remove the Member immediately",
         isCorrect: false,
         feedback:
-          "Not quite. The Serjeant at Arms acts only on the direction of the Speaker, but removal follows a specific procedure. The Member must first be formally named before the House can decide on their suspension.",
+          "The Serjeant at Arms acts only on the direction of the Speaker, but removal follows a specific procedure. The Member must first be formally named before the House can decide on their suspension.",
       },
       {
         id: "b",
         text: 'Name the Member by saying "I name [Member] for disregarding the authority of the Chair"',
         isCorrect: true,
         feedback:
-          "Correct. Under Standing Order No. 44, if a Member persists in disregarding the authority of the Chair after being warned, the Speaker names the Member. A motion is then put to the House for the Member's suspension. This is a grave step — the most serious disciplinary power the Speaker exercises in the Chamber.",
+          "Under Standing Order No. 44, if a Member persists in disregarding the authority of the Chair after being warned, the Speaker names the Member. A motion is then put to the House for the Member's suspension. This is a grave step — the most serious disciplinary power the Speaker exercises in the Chamber.",
       },
       {
         id: "c",
@@ -79,28 +79,28 @@ export const DEMO_SCENARIOS: Scenario[] = [
         text: "The speech should be uncontroversial in tone",
         isCorrect: false,
         feedback:
-          "Not quite. An uncontroversial tone is indeed a well-established convention for maiden speeches — so this IS a recognised convention, not the odd one out. Look for the option that reverses an actual convention.",
+          "An uncontroversial tone is indeed a well-established convention for maiden speeches — so this IS a recognised convention, not the odd one out. Look for the option that reverses an actual convention.",
       },
       {
         id: "b",
         text: "The Member should pay tribute to their predecessor",
         isCorrect: false,
         feedback:
-          "Not quite. Paying tribute to one's predecessor is a long-standing convention — new Members customarily speak generously of their predecessor regardless of party. This IS a recognised convention, not the odd one out.",
+          "Paying tribute to one's predecessor is a long-standing convention — new Members customarily speak generously of their predecessor regardless of party. This IS a recognised convention, not the odd one out.",
       },
       {
         id: "c",
         text: "The Member should refer to their constituency",
         isCorrect: false,
         feedback:
-          "Not quite. Referring to one's constituency is indeed conventional — new Members typically describe their constituency, its character and concerns. This IS a recognised convention, not the odd one out.",
+          "Referring to one's constituency is indeed conventional — new Members typically describe their constituency, its character and concerns. This IS a recognised convention, not the odd one out.",
       },
       {
         id: "d",
         text: "The Member must give way to interventions as a courtesy",
         isCorrect: true,
         feedback:
-          "Well spotted. The convention is precisely the opposite — it is customary for other Members NOT to intervene during a maiden speech, and for the new Member not to give way. This courtesy allows the new Member to speak without interruption.",
+          "The convention is precisely the opposite — it is customary for other Members NOT to intervene during a maiden speech, and for the new Member not to give way. This courtesy allows the new Member to speak without interruption.",
       },
     ],
     difficulty: "introductory",
@@ -128,7 +128,7 @@ export const DEMO_SCENARIOS: Scenario[] = [
         text: "Ask the Member to withdraw the remark",
         isCorrect: true,
         feedback:
-          'Correct. Accusing another Member of deliberately misleading the House is unparliamentary, as it imputes dishonourable conduct. The Speaker should intervene and ask the Member to withdraw the remark. If the Member wishes to allege that the House has been misled, the proper course is to table a substantive motion — it cannot simply be stated as a debating point.',
+          'Accusing another Member of deliberately misleading the House is unparliamentary, as it imputes dishonourable conduct. The Speaker should intervene and ask the Member to withdraw the remark. If the Member wishes to allege that the House has been misled, the proper course is to table a substantive motion — it cannot simply be stated as a debating point.',
       },
       {
         id: "c",
