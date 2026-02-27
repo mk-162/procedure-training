@@ -1,0 +1,10 @@
+// ===================================
+// ERSKINE MAY TRAINING APP
+// GOV.UK Frontend (via Sass) + Parliamentary overrides
+// ===================================
+
+// 1. Import all of GOV.UK Frontend
+@import "../node_modules/govuk-frontend/dist/govuk";
+
+// 2. Import Parliament-specific overrides
+@import "parliament-overrides";

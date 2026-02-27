@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { ParliamentHeader } from "@/components/ParliamentHeader";
 import { ParliamentFooter } from "@/components/ParliamentFooter";
 
-/* Parliamentary Design System (GOV.UK Frontend tokens + Pugin overrides) */
-import "@/styles/parliament.css";
+/* GOV.UK Frontend (compiled via Sass) + Parliamentary overrides */
+import "@/styles/main.scss";
 
 export const metadata: Metadata = {
   title: "Erskine May — Procedural training",
@@ -25,7 +25,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="govuk-template">
-      <body className="govuk-template__body">
+      <body className="govuk-template__body js-enabled">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.body.className += ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');`,
+          }}
+        />
         <a
           href="#main-content"
           className="govuk-skip-link"
@@ -37,6 +42,12 @@ export default function RootLayout({
         <div className="parliament-accent-bar" aria-hidden="true" />
         {children}
         <ParliamentFooter />
+        <script
+          type="module"
+          dangerouslySetInnerHTML={{
+            __html: `import { initAll } from '/govuk-frontend.min.js'; initAll();`,
+          }}
+        />
       </body>
     </html>
   );
