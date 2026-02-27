@@ -432,34 +432,69 @@ a:active {
 }
 
 /* ===================================
-   COMMONS GREEN BANNER
+   GREEN ACCENT BAR
+   Thin Commons Green stripe between
+   header and page content (Pugin pattern)
+   =================================== */
+.parliament-accent-bar {
+  background: var(--parliament-green);
+  height: 4px;
+}
+
+/* ===================================
+   PAGE TITLE BANNER
+   White background with large title,
+   matching parliament.uk layout
    =================================== */
 .parliament-banner {
-  background: var(--parliament-green);
-  color: var(--parliament-white);
-  padding: 30px 0;
+  background: var(--parliament-white);
+  color: var(--govuk-text-colour);
+  padding: 20px 0 15px;
+  border-bottom: 1px solid var(--govuk-border-colour);
 }
 
 @media (min-width: 40.0625em) {
   .parliament-banner {
-    padding: 50px 0;
+    padding: 30px 0 20px;
   }
 }
 
 .parliament-banner h1 {
-  color: var(--parliament-white);
-  margin-bottom: 15px;
+  color: var(--govuk-text-colour);
+  margin-bottom: 5px;
 }
 
-.parliament-banner .govuk-body-l,
-.parliament-banner p {
-  color: rgba(255, 255, 255, 0.85);
+.parliament-banner .lead {
+  color: var(--govuk-secondary-text-colour);
 }
 
-.parliament-banner a,
-.parliament-banner a:link,
-.parliament-banner a:visited {
-  color: var(--parliament-white);
+/* ===================================
+   CONTENT BLOCK
+   White card on grey background
+   (Pugin .block pattern)
+   =================================== */
+.block {
+  background-color: var(--parliament-white);
+  padding: 18px;
+}
+
+@media (min-width: 40.0625em) {
+  .block {
+    padding: 30px;
+  }
+}
+
+.block--accent {
+  border-top: 4px solid var(--parliament-green);
+}
+
+.block--spaced {
+  margin-top: 20px;
+}
+
+/* Grey page background for content areas */
+.page-content--grey {
+  background-color: var(--govuk-template-background-colour);
 }
 
 /* ===================================
@@ -499,6 +534,14 @@ a:active {
   padding: 40px 0;
   border-bottom: 4px solid var(--parliament-green);
   margin-bottom: 50px;
+}
+
+/* When featured-module is inside a block, remove outer padding/border */
+.block .featured-module__eyebrow,
+.block .featured-module__title,
+.block .featured-module__body,
+.block .featured-module__chapters {
+  /* Inherit block padding */
 }
 
 .featured-module__eyebrow {

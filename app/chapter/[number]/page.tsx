@@ -117,24 +117,35 @@ export default async function ChapterPage({
   });
 
   return (
-    <main className="page-content">
+    <>
+    {/* Page title banner */}
+    <div className="parliament-banner">
       <div className="container">
-        {/* Breadcrumbs */}
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <ol className="breadcrumbs__list">
-            <li>
-              <Link href="/">Chapter index</Link>
-            </li>
-            {part && (
-              <li>
-                Part {part.number}: {part.title}
-              </li>
-            )}
-            <li aria-current="page">Chapter {chapterNumber}</li>
-          </ol>
-        </nav>
+        <h1>{apiData?.title || meta.title}</h1>
+      </div>
+    </div>
 
+    {/* Breadcrumbs */}
+    <div className="container">
+      <nav className="breadcrumbs" aria-label="Breadcrumb">
+        <ol className="breadcrumbs__list">
+          <li>
+            <Link href="/">Chapter index</Link>
+          </li>
+          {part && (
+            <li>
+              Part {part.number}: {part.title}
+            </li>
+          )}
+          <li aria-current="page">Chapter {chapterNumber}</li>
+        </ol>
+      </nav>
+    </div>
+
+    <main className="page-content page-content--grey">
+      <div className="container">
         {/* Chapter header */}
+        <div className="block block--accent">
         <div className="chapter-header">
           <div className="chapter-header__number">
             Chapter {chapterNumber}
@@ -197,28 +208,33 @@ export default async function ChapterPage({
           </div>
         )}
 
+        </div>{/* end block--accent */}
+
         {/* Section tree */}
-        <div className="chapter-sections">
-          <h2>Section index</h2>
-          <p>
-            From the current digital edition of Erskine May. Sections with
-            training exercises are marked.
-          </p>
-          {apiData ? (
-            <SectionTree
-              sections={apiData.sections}
-              chapterNumber={chapterNumber}
-            />
-          ) : (
-            <div className="update-alert">
-              <strong>Source unavailable</strong> — We cannot reach the Erskine
-              May API at the moment. Consult the Table Office for the
-              authoritative text.
-            </div>
-          )}
+        <div className="block block--spaced">
+          <div className="chapter-sections">
+            <h2>Section index</h2>
+            <p>
+              From the current digital edition of Erskine May. Sections with
+              training exercises are marked.
+            </p>
+            {apiData ? (
+              <SectionTree
+                sections={apiData.sections}
+                chapterNumber={chapterNumber}
+              />
+            ) : (
+              <div className="update-alert">
+                <strong>Source unavailable</strong> — We cannot reach the Erskine
+                May API at the moment. Consult the Table Office for the
+                authoritative text.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </main>
+    </>
   );
 }
 

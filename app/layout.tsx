@@ -22,6 +22,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <ParliamentHeader />
+        <div className="parliament-accent-bar" aria-hidden="true" />
         <div id="main-content">
           {children}
         </div>

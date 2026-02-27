@@ -8,26 +8,23 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Banner */}
+      {/* Page title banner (white, like parliament.uk) */}
       <div className="parliament-banner">
         <div className="container">
-          <h1>Procedural training</h1>
+          <h1>Erskine May</h1>
           <p className="lead">
-            A training resource for House of Commons practice and procedure,
-            based on the 25th edition of Erskine May.
-          </p>
-          <p className="lead">
-            {TOTAL_CHAPTERS} chapters · {TOTAL_SECTIONS} sections ·
-            synchronised with the live digital edition
+            Procedural training · {TOTAL_CHAPTERS} chapters ·{" "}
+            {TOTAL_SECTIONS} sections · synchronised with the live digital
+            edition
           </p>
         </div>
       </div>
 
-      <main className="page-content">
+      <main className="page-content page-content--grey">
         <div className="container">
 
           {/* Recommended programme */}
-          <section className="featured-module">
+          <section className="block block--accent">
             <div className="featured-module__eyebrow">Recommended programme</div>
             <h2 className="featured-module__title">
               Procedure in the House of Commons
@@ -67,7 +64,7 @@ export default function HomePage() {
           </section>
 
           {/* Full chapter index by part */}
-          <section className="chapter-index">
+          <section className="block block--spaced">
             <h2>Complete chapter index</h2>
             <p>
               Erskine May is organised into {PARTS.length} parts. Select a

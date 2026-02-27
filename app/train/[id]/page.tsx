@@ -42,25 +42,35 @@ export default async function TrainPage({
   }
 
   return (
-    <main className="page-content">
+    <>
+    {/* Page title banner */}
+    <div className="parliament-banner">
       <div className="container">
-        {/* Breadcrumbs */}
-        <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <ol className="breadcrumbs__list">
-            <li><Link href="/">Chapter index</Link></li>
-            <li><Link href="/chapter/21">Chapter 21</Link></li>
-            <li aria-current="page">{scenario.title}</li>
-          </ol>
-        </nav>
+        <h1>{scenario.title}</h1>
+      </div>
+    </div>
 
+    {/* Breadcrumbs */}
+    <div className="container">
+      <nav className="breadcrumbs" aria-label="Breadcrumb">
+        <ol className="breadcrumbs__list">
+          <li><Link href="/">Chapter index</Link></li>
+          <li><Link href="/chapter/21">Chapter 21</Link></li>
+          <li aria-current="page">{scenario.title}</li>
+        </ol>
+      </nav>
+    </div>
+
+    <main className="page-content page-content--grey">
+      <div className="container">
         <div className="split-layout">
           {/* Left: interactive scenario */}
-          <div className="split-layout__primary">
+          <div className="split-layout__primary block">
             <ScenarioCard scenario={scenario} />
           </div>
 
           {/* Right: Erskine May source text */}
-          <div className="split-layout__secondary">
+          <div className="split-layout__secondary block">
             <h3 className="source-authority__heading">Source authority</h3>
 
             {sectionData ? (
@@ -109,5 +119,6 @@ export default async function TrainPage({
         </div>
       </div>
     </main>
+    </>
   );
 }
